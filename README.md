@@ -1,2 +1,3 @@
-# jn-ventures
-Jeanelle's and Nik's Food and Places List
+# JN Ventures
+
+A NextJS app for Jeanelle and Nik's adventures.
