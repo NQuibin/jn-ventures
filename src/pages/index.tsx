@@ -1,5 +1,13 @@
 import Head from 'next/head';
-import { Button, ButtonGroup } from '@chakra-ui/react';
+import { SpotService } from '@/services/spots/service';
+
+export const getServerSideProps = async () => {
+  const spots = await new SpotService().listSpots();
+
+  return {
+    props: {},
+  };
+};
 
 export default function Home() {
   return (
@@ -10,9 +18,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-
-      </main>
+      <main></main>
     </>
   );
 }
