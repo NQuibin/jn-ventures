@@ -974,6 +974,11 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@fontsource/ntr@^4.5.10":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@fontsource/ntr/-/ntr-4.5.10.tgz#5ca77f976b0a0a560e4b3fd07610047dfda84026"
+  integrity sha512-fBvW/wxp/UQYlkWPJjvKYI0mjLBhqLDwUVCCK6nR+NZXvJxMxlp0bM1IlWnCN+Gpimf0ABEQf9DCfEIl9xc7yw==
+
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.8.tgz#03595ac2075a4dc0f191cc2131de14fbd7d410b9"

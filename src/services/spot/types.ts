@@ -5,6 +5,7 @@ export interface Spot {
   type: string;
   area: string;
   address: string;
+  cuisines: string;
   website: string | null;
   google_maps_link: string | null;
   visited: boolean;
