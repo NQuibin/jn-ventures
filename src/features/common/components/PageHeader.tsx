@@ -1,8 +1,7 @@
-import React from 'react';
 import Image from 'next/image';
 import Logo from 'public/logo.png';
 
-const PageHeader: React.FC = () => {
+export default function PageHeader() {
   return (
     <header className="bg-black h-20 flex shrink-0 justify-center items-center">
       <h1 className="hidden">JN Ventures</h1>
@@ -16,6 +15,4 @@ const PageHeader: React.FC = () => {
       </div>
     </header>
   );
-};
-
-export default PageHeader;
+}

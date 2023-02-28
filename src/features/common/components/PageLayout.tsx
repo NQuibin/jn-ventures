@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import Head from 'next/head';
 
 interface PageLayoutProps {
@@ -6,7 +6,7 @@ interface PageLayoutProps {
   children: ReactNode;
 }
 
-const PageLayout: React.FC<PageLayoutProps> = ({ headTitle, children }) => {
+export default function PageLayout({ headTitle, children }: PageLayoutProps) {
   const title = `JN Ventures | ${headTitle}`;
   return (
     <>
@@ -19,6 +19,4 @@ const PageLayout: React.FC<PageLayoutProps> = ({ headTitle, children }) => {
       <main>{children}</main>
     </>
   );
-};
-
-export default PageLayout;
+}

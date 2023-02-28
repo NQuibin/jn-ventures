@@ -1,20 +1,19 @@
 import type { Spot } from '@/services/spot/types';
-
-import React from 'react';
-import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react';
+import { Card, CardHeader, CardBody, CardFooter, Link } from '@chakra-ui/react';
 
 interface SpotCardProps {
   spot: Spot;
 }
 
-const SpotCard: React.FC<SpotCardProps> = ({ spot }) => {
+export default function SpotCard({ spot }: SpotCardProps) {
   return (
     <Card direction={{ base: 'row', sm: 'column' }}>
       <CardBody>
-        <h2>{spot.name}</h2>
+        <h2 className="font-semibold">{spot.name}</h2>
+        <Link rel="noreferrer" href={spot.googleMapsLink}>
+          {spot.area}
+        </Link>
       </CardBody>
     </Card>
   );
-};
-
-export default SpotCard;
+}

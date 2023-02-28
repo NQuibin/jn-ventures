@@ -1,16 +1,22 @@
 export interface Spot {
-  id: number;
   key: string;
   name: string;
   type: string;
   area: string;
   address: string;
   cuisines: string;
-  website: string | null;
-  google_maps_link: string | null;
+  website?: string;
+  googleMapsLink: string;
   visited: boolean;
   favourite: boolean;
-  updated_at: string;
-  created_at: string;
-  image: string | null;
+  image?: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface SpotRow
+  extends Omit<Spot, 'googleMapsLink' | 'updatedAt' | 'createdAt'> {
+  google_maps_link: Spot['googleMapsLink'];
+  updated_at: Spot['updatedAt'];
+  created_at: Spot['createdAt'];
 }

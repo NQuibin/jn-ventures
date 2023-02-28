@@ -1,9 +1,14 @@
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { Spot } from '@/services/spot/types';
+
 import { SpotService } from '@/services/spot/service';
 import PageLayout from '../features/common/components/PageLayout';
 import PageHeader from '../features/common/components/PageHeader';
 import SpotCard from '../features/spot/components/SpotCard';
 
-export const getServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps<{
+  spots: Spot[];
+}> = async () => {
   const spots = await new SpotService().listSpots();
 
   return {
@@ -11,7 +16,9 @@ export const getServerSideProps = async () => {
   };
 };
 
-const Home = ({ spots }) => {
+export default function Home({
+  spots,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const buildSpotCards = () => {
     return spots.map(spot => {
       return (
@@ -28,6 +35,4 @@ const Home = ({ spots }) => {
       <div className="max-w-2xl mx-auto p-4 flex">{buildSpotCards()}</div>
     </PageLayout>
   );
-};
-
-export default Home;
+}
