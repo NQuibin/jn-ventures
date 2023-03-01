@@ -8,8 +8,8 @@ interface ThemeProviderProps {
 
 const theme = extendTheme({
   fonts: {
-    // heading: `'Times New Roman', sans-serif`,
-    // body: `'Times New Roman', sans-serif`,
+    heading: `'Padauk', sans-serif`,
+    body: `'Padauk', sans-serif`,
   },
 });
 export default function ThemeProvider({ children }: ThemeProviderProps) {

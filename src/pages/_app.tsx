@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import ThemeProvider from '@/features/theme/providers/ThemeProvider';
 
 import '@/styles/globals.css';
-import '@fontsource/ntr/400.css';
+import '@fontsource/padauk/400.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
