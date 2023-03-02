@@ -1,5 +1,5 @@
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { Spot } from '@/services/spot/types';
+import type { Spot } from '@/services/spot/types';
 
 import { SpotService } from '@/services/spot/service';
 import PageLayout from '../features/common/components/PageLayout';

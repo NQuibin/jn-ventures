@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+
 import Head from 'next/head';
 
 interface PageLayoutProps {
