@@ -22,7 +22,7 @@ export default function Home({
   const buildSpotCards = () => {
     return spots.map(spot => {
       return (
-        <div key={spot.key} className="w-full sm:w-1/2 md:w-1/3">
+        <div key={spot.key} className="w-full py-2 sm:px-2 sm:w-1/2 md:w-1/3">
           <SpotCard spot={spot} />
         </div>
       );
@@ -32,7 +32,9 @@ export default function Home({
   return (
     <PageLayout headTitle="Food spots">
       <PageHeader />
-      <div className="max-w-2xl mx-auto p-4 flex">{buildSpotCards()}</div>
+      <div className="max-w-2xl mx-auto p-4 flex flex-col sm:flex-row sm:flex-wrap">
+        {buildSpotCards()}
+      </div>
     </PageLayout>
   );
 }

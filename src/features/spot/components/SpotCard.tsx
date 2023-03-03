@@ -18,7 +18,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
 
   return (
     <Card direction={{ base: 'row', sm: 'column' }} height="100%">
-      <div className="relative h-full sm:h-48 w-full basis-2/5 sm:basis-48">
+      <div className="relative w-full basis-2/5 sm:basis-48 sm:h-48">
         {spot.image && (
           <Image
             fill
