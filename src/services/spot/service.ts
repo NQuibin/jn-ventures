@@ -4,7 +4,11 @@ import { convertObjKeysToCamelCase } from '../../utils/convertObjKeysToCase';
 
 export class SpotService {
   async listSpots(): Promise<Spot[]> {
-    const result = await supabase.from('spots').select().order('name');
+    const result = await supabase
+      .from('spots')
+      .select()
+      .order('image')
+      .order('name');
     const spotRows = result.data as SpotRow[];
     return convertObjKeysToCamelCase(spotRows) as Spot[];
   }

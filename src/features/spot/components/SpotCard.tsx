@@ -15,24 +15,24 @@ interface SpotCardProps {
 }
 
 export default function SpotCard({ spot }: SpotCardProps) {
+  const typeTagColor = TYPE_COLOR_TAG[spot.type];
+  const hasImage = !!spot.image;
+  const imageUrl = !!spot.image ? buildImageUrl(spot.image, BUCKET_SPOTS) : '';
+
   const extractUrlHost = (url: string): string => {
     return new URL(url).host;
-  };
-
-  const getTypeTagColor = (type: SpotType): string => {
-    return TYPE_COLOR_TAG[type];
   };
 
   return (
     <Card
       direction={{ base: 'row', sm: 'column' }}
-      height={{ base: '10rem', sm: '100%' }}
+      height={{ base: hasImage ? '10rem' : '100%', sm: '100%' }}
     >
-      {spot.image && (
+      {hasImage && (
         <div className="relative w-full shrink-0 basis-2/5 sm:basis-48 sm:h-48">
           <Image
             fill
-            src={buildImageUrl(spot.image, BUCKET_SPOTS)}
+            src={imageUrl}
             alt={`${spot.name} card image`}
             className="object-cover rounded-l-md sm:rounded-bl-none sm:rounded-t-md"
           />
@@ -40,7 +40,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
       )}
       <CardBody p="0.75rem">
         <div className="flex items-center justify-between mb-4">
-          <Tag colorScheme={getTypeTagColor(spot.type)} fontSize="xs">
+          <Tag colorScheme={typeTagColor} fontSize="xs">
             {spot.type.toUpperCase()}
           </Tag>
           <div>
@@ -60,17 +60,19 @@ export default function SpotCard({ spot }: SpotCardProps) {
           <Icon as={FaMapMarkerAlt} className="mr-1.5 mb-1" />
           {_.capitalize(spot.area)}
         </Link>
-        <div className="hidden sm:block">
-          <Link
-            rel="noreferrer"
-            href={spot.website}
-            target="_blank"
-            className="inline-flex items-center"
-          >
-            <Icon as={FaLink} className="mr-1.5" />
-            {spot.website && extractUrlHost(spot.website)}
-          </Link>
-        </div>
+        {spot.website && (
+          <div className="hidden sm:block">
+            <Link
+              rel="noreferrer"
+              href={spot.website}
+              target="_blank"
+              className="inline-flex items-center"
+            >
+              <Icon as={FaLink} className="mr-1.5" />
+              {extractUrlHost(spot.website)}
+            </Link>
+          </div>
+        )}
       </CardBody>
     </Card>
   );

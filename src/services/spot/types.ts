@@ -13,11 +13,11 @@ export interface Spot {
   area: string;
   address: string;
   cuisines: string;
-  website?: string;
+  website?: string | null;
   googleMapsLink: string;
   visited: boolean;
   favourite: boolean;
-  image?: string;
+  image?: string | null;
   updatedAt: string;
   createdAt: string;
 }
