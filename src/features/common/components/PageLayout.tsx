@@ -17,7 +17,7 @@ export default function PageLayout({ headTitle, children }: PageLayoutProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <main>{children}</main>
+      <main className="bg-neutral-100 min-h-screen">{children}</main>
     </>
   );
 }

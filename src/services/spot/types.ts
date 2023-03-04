@@ -1,7 +1,15 @@
+export type SpotType =
+  | 'bakery'
+  | 'bar'
+  | 'brunch'
+  | 'cafe'
+  | 'dessert'
+  | 'restaurant';
+
 export interface Spot {
   key: string;
   name: string;
-  type: string;
+  type: SpotType;
   area: string;
   address: string;
   cuisines: string;
