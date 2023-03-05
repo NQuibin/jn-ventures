@@ -1,6 +1,8 @@
 import { camelCase, snakeCase } from 'lodash';
 
-function processValue(val) {
+type CaseFn = typeof camelCase | typeof snakeCase;
+
+function processValue(val: any): any {
   if (val === null || val === undefined) {
     return val;
   }
@@ -16,7 +18,7 @@ function processValue(val) {
   return val;
 }
 
-function convertObjKeysToCase(obj, caseFn) {
+function convertObjKeysToCase(obj: object, caseFn: CaseFn) {
   if (Array.isArray(obj)) {
     return obj.map(processValue);
   }
@@ -28,10 +30,10 @@ function convertObjKeysToCase(obj, caseFn) {
   );
 }
 
-export function convertObjKeysToCamelCase(obj) {
+export function convertObjKeysToCamelCase(obj: object): object {
   return convertObjKeysToCase(obj, camelCase);
 }
 
-export function convertObjKeysToSnakeCase(obj) {
+export function convertObjKeysToSnakeCase(obj: object): object {
   return convertObjKeysToCase(obj, snakeCase);
 }
