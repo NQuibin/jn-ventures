@@ -1,5 +1,9 @@
 export default function PageFooter() {
-  return <footer>
+  const thisYear = new Date().getFullYear();
 
-  </footer>
+  return (
+    <footer className="bg-neutral-600 w-full mt-auto p-6 text-center">
+      <small className="text-white">© {thisYear} Nikki Louis Quibin</small>
+    </footer>
+  );
 }

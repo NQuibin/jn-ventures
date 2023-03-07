@@ -3,7 +3,7 @@ import Logo from 'public/logo.png';
 
 export default function PageHeader() {
   return (
-    <header className="bg-black h-20 flex shrink-0 justify-center items-center">
+    <header className="bg-neutral-800 w-full h-20 flex shrink-0 justify-center items-center">
       <h1 className="hidden">JN Ventures</h1>
       <div className="relative w-48 h-full">
         <Image

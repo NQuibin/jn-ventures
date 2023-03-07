@@ -6,6 +6,8 @@ import { SpotService } from '@/services/spot/service';
 import PageLayout from '../features/common/components/PageLayout';
 import PageHeader from '../features/common/components/PageHeader';
 import SpotCard from '../features/spot/components/SpotCard';
+import PageFooter from '../features/common/components/PageFooter';
+import SpotLegend from "../features/spot/components/SpotLegend";
 
 interface HomeProps {
   imagedSpots: Spot[];
@@ -50,14 +52,14 @@ export default function Home({
   return (
     <PageLayout headTitle="Food spots">
       <PageHeader />
-      <div className="max-w-2xl mx-auto px-2 py-4">
+      <div className="max-w-3xl w-full mx-auto px-2 py-4">
+        <SpotLegend className="p-2 justify-end" />
         <div className="flex flex-col sm:flex-row sm:flex-wrap">
           {buildImagedSpotCards()}
         </div>
-        <div className="flex flex-wrap">
-          {buildUnimagedSpotCards()}
-        </div>
+        <div className="flex flex-wrap">{buildUnimagedSpotCards()}</div>
       </div>
+      <PageFooter />
     </PageLayout>
   );
 }
