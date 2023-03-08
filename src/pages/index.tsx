@@ -7,7 +7,7 @@ import PageLayout from '../features/common/components/PageLayout';
 import PageHeader from '../features/common/components/PageHeader';
 import SpotCard from '../features/spot/components/SpotCard';
 import PageFooter from '../features/common/components/PageFooter';
-import SpotLegend from "../features/spot/components/SpotLegend";
+import SpotLegend from '../features/spot/components/SpotLegend';
 
 interface HomeProps {
   imagedSpots: Spot[];
@@ -35,7 +35,7 @@ export default function Home({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const buildImagedSpotCards = (): ReactNode[] => {
     return imagedSpots.map(spot => (
-      <div key={spot.key} className="w-full p-2 sm:w-1/2 md:w-1/3">
+      <div key={spot.key} className="w-full py-2 sm:px-2 sm:w-1/2 md:w-1/3">
         <SpotCard spot={spot} />
       </div>
     ));
@@ -43,7 +43,7 @@ export default function Home({
 
   const buildUnimagedSpotCards = (): ReactNode[] => {
     return unimagedSpots.map(spot => (
-      <div key={spot.key} className="w-1/2 p-2 sm:w-1/3">
+      <div key={spot.key} className="p-2 w-full sm:w-1/3">
         <SpotCard spot={spot} />
       </div>
     ));
@@ -52,7 +52,7 @@ export default function Home({
   return (
     <PageLayout headTitle="Food spots">
       <PageHeader />
-      <div className="max-w-3xl w-full mx-auto px-2 py-4">
+      <div className="max-w-3xl w-full mx-auto p-4">
         <SpotLegend className="p-2 justify-end" />
         <div className="flex flex-col sm:flex-row sm:flex-wrap">
           {buildImagedSpotCards()}

@@ -1,4 +1,4 @@
-import type { Spot, SpotType } from '@/services/spot/types';
+import type { Spot } from '@/services/spot/types';
 
 import Image from 'next/image';
 import _ from 'lodash';
@@ -8,7 +8,7 @@ import { AiTwotoneHeart } from 'react-icons/ai';
 import { BsCheck2Circle } from 'react-icons/bs';
 import { buildImageUrl } from '@/utils/buildImageUrl';
 import { BUCKET_SPOTS } from '@/core/supabase/constants';
-import { TYPE_COLOR_TAG } from './constants';
+import { TYPE_COLOR_TAG } from '../constants';
 
 interface SpotCardProps {
   spot: Spot;

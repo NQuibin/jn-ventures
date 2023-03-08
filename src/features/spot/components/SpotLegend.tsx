@@ -3,7 +3,7 @@ import { BsCheck2Circle } from 'react-icons/bs';
 import { Icon } from '@chakra-ui/react';
 
 interface SpotLegendProps {
-  className: string;
+  className?: string;
 }
 
 export default function SpotLegend({ className }: SpotLegendProps) {
