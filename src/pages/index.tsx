@@ -10,40 +10,25 @@ import PageFooter from '../features/common/components/PageFooter';
 import SpotLegend from '../features/spot/components/SpotLegend';
 
 interface HomeProps {
-  imagedSpots: Spot[];
-  unimagedSpots: Spot[];
+  spots: Spot[];
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
   const spots = await new SpotService().listSpots();
-
-  // partition array of spots by their image value
-  const [imagedSpots, unimagedSpots] = spots.reduce(
-    ([is, uis]: [Spot[], Spot[]], spot) =>
-      !!spot.image ? [[...is, spot], uis] : [is, [...uis, spot]],
-    [[], []]
-  );
-
   return {
-    props: { imagedSpots, unimagedSpots },
+    props: { spots },
   };
 };
 
 export default function Home({
-  imagedSpots,
-  unimagedSpots,
+  spots,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const buildImagedSpotCards = (): ReactNode[] => {
-    return imagedSpots.map(spot => (
-      <div key={spot.key} className="w-full py-2 sm:px-2 sm:w-1/2 md:w-1/3">
-        <SpotCard spot={spot} />
-      </div>
-    ));
-  };
-
-  const buildUnimagedSpotCards = (): ReactNode[] => {
-    return unimagedSpots.map(spot => (
-      <div key={spot.key} className="p-2 w-full sm:w-1/3">
+    return spots.map(spot => (
+      <div
+        key={spot.key}
+        className="w-full py-2 sm:px-2 sm:w-1/2 md:w-1/3 lg:w-1/4"
+      >
         <SpotCard spot={spot} />
       </div>
     ));
@@ -52,12 +37,11 @@ export default function Home({
   return (
     <PageLayout headTitle="Food spots">
       <PageHeader />
-      <div className="max-w-3xl w-full mx-auto p-4">
+      <div className="max-w-6xl w-full mx-auto p-4">
         <SpotLegend className="p-2 justify-end" />
         <div className="flex flex-col sm:flex-row sm:flex-wrap">
           {buildImagedSpotCards()}
         </div>
-        <div className="flex flex-wrap">{buildUnimagedSpotCards()}</div>
       </div>
       <PageFooter />
     </PageLayout>
