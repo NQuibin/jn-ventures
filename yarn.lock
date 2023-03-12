@@ -1173,6 +1173,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@types/google.maps@^3.52.2":
+  version "3.52.2"
+  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.52.2.tgz#a9b3a9fceae23e1d8b71cccf6ed9120125e5c066"
+  integrity sha512-zhzHLgAU4EDai3/NDorWTYUskS7KSoK6m8MYPu66lPVbz1RsKJjEEEI+89oj3rPG5Zw8bszoGGXrsH5ehXkuTw==
+
 "@types/json5@^0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
