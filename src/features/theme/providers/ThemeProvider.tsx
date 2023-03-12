@@ -8,8 +8,8 @@ interface ThemeProviderProps {
 
 const theme = extendTheme({
   fonts: {
-    heading: `'Padauk', sans-serif`,
-    body: `'Padauk', sans-serif`,
+    heading: `'Quattrocento Sans', sans-serif`,
+    body: `'Quattrocento Sans', sans-serif`,
   },
   breakpoints: {
     sm: '640px',

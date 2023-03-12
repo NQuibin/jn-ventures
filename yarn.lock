@@ -974,10 +974,15 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@fontsource/padauk@^4.5.11":
+"@fontsource/dosis@^4.5.11":
   version "4.5.11"
-  resolved "https://registry.yarnpkg.com/@fontsource/padauk/-/padauk-4.5.11.tgz#f18cff9e33ff9eb693bca40040cc543005bcf2e8"
-  integrity sha512-xNsWkDN/V/zn2N21BfnooM2Bx9IsralEfVxWrHOjcWEKQPbYp2zLuU03yE7INtekUaXs9rA8qfp8bUoZ9kKnkg==
+  resolved "https://registry.yarnpkg.com/@fontsource/dosis/-/dosis-4.5.11.tgz#78e6871187793a3b283ce807dcdbbdc06af9c197"
+  integrity sha512-bPFz80oRiNVYnojK9pDG243oHHpIbg+54EPLp9IRH9vKyk2WQNgBQATjO9u86C6weN8tEO25GM4tSU0ev7I1Vg==
+
+"@fontsource/quattrocento-sans@^4.5.10":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@fontsource/quattrocento-sans/-/quattrocento-sans-4.5.10.tgz#09c04f89cddf3082f5d95b99de4e8a0962885b48"
+  integrity sha512-r2aG37kqcsM4YZCmE6WyPHmMmYShvsc4LhRP5mx/k9BvCPmDaeIkQQ80ph6Bc3Kslc7TgJy8/LWI5snfyH4+Sw==
 
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"

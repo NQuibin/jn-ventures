@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { Input } from '@chakra-ui/react';
-import { convertObjKeysToCamelCase } from '@/utils/convertObjKeysToCase';
 
 interface AutocompleteProps {
   onPlaceSelect(place: google.maps.places.PlaceResult): void;
