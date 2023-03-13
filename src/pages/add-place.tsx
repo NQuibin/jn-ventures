@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PageHeader from '../features/common/components/PageHeader';
 import PageLayout from '../features/common/components/PageLayout';
 import PageFooter from '../features/common/components/PageFooter';
@@ -12,6 +12,9 @@ import {
   Divider,
   Button,
 } from '@chakra-ui/react';
+import { TYPES } from '../services/spot/constants';
+import axios from 'axios';
+import { NewSpot, SpotType } from '../services/spot/types';
 
 const LOCALITY_TYPE = 'locality';
 
@@ -19,9 +22,17 @@ export default function AddPlace() {
   const [place, setPlace] = useState<
     { [key: string]: string | undefined } | undefined
   >(undefined);
-  const [type, setType] = useState('');
+  const [type, setType] = useState<SpotType | undefined>();
   const [visited, setVisited] = useState(false);
   const [favourite, setFavourite] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const typeOptions = Object.values(TYPES).map(type => {
+    return {
+      value: type,
+      label: type.charAt(0).toUpperCase() + type.slice(1),
+    };
+  });
 
   const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
     // find locality to get the area
@@ -31,6 +42,7 @@ export default function AddPlace() {
     const area = locality ? locality.long_name : undefined;
 
     setPlace({
+      placeId: place.place_id,
       name: place.name,
       address: place.formatted_address,
       mapsLink: place.url,
@@ -38,6 +50,30 @@ export default function AddPlace() {
       area,
     });
   };
+
+  const handleAddSpot = async () => {
+    if (place) {
+      const data = {
+        name: place.name,
+        area: place.area,
+        address: place.address,
+        website: place.website,
+        googlePlaceId: place.placeId,
+        googleMapsLink: place.mapsLink,
+        type,
+        visited,
+        favourite,
+      } satisfies Partial<NewSpot>;
+
+      await axios.post('/api/spots', data);
+    }
+
+    // TODO: add exception handling
+  };
+
+  useEffect(() => {
+    setIsFormValid(!!type);
+  }, [type]);
 
   return (
     <>
@@ -79,26 +115,42 @@ export default function AddPlace() {
                   <Select
                     placeholder="Select spot"
                     value={type}
-                    onChange={e => console.log(e.target.value)}
+                    onChange={e => setType(e.target.value as SpotType)}
                   >
-                    <option>Bakery</option>
-                    <option>Bar</option>
-                    <option>Brunch</option>
-                    <option>Cafe</option>
-                    <option>Dessert</option>
-                    <option>Restaurant</option>
+                    {typeOptions.map(type => (
+                      <option key={type.value} value={type.value}>
+                        {type.label}
+                      </option>
+                    ))}
                   </Select>
                 </FormControl>
                 <FormControl className="mt-2">
                   <CheckboxGroup colorScheme="blue">
                     <div className="flex flex-wrap gap-x-4">
-                      <Checkbox value="visited">Visited</Checkbox>
-                      <Checkbox value="favourite">Favourite</Checkbox>
+                      <Checkbox
+                        isChecked={visited}
+                        value="visited"
+                        onChange={e => setVisited(e.target.checked)}
+                      >
+                        Visited
+                      </Checkbox>
+                      <Checkbox
+                        isChecked={favourite}
+                        value="favourite"
+                        onChange={e => setFavourite(e.target.checked)}
+                      >
+                        Favourite
+                      </Checkbox>
                     </div>
                   </CheckboxGroup>
                 </FormControl>
               </div>
-              <Button colorScheme="blue" className="mt-4">
+              <Button
+                isDisabled={!isFormValid}
+                colorScheme="blue"
+                className="mt-4"
+                onClick={handleAddSpot}
+              >
                 Add spot
               </Button>
             </div>
