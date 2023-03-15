@@ -1,3 +1,5 @@
+import type { GetServerSidePropsContext } from 'next';
+
 import { useState, useEffect } from 'react';
 import PageHeader from '../features/common/components/PageHeader';
 import PageLayout from '../features/common/components/PageLayout';
@@ -19,7 +21,7 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const LOCALITY_TYPE = 'locality';
 
-export const getServerSideProps = async ctx => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(ctx);
 
   const {
