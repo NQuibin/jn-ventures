@@ -15,8 +15,34 @@ import {
 import { TYPES } from '../services/spot/constants';
 import axios from 'axios';
 import { NewSpot, SpotType } from '../services/spot/types';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const LOCALITY_TYPE = 'locality';
+
+export const getServerSideProps = async ctx => {
+  const supabase = createServerSupabaseClient(ctx);
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  // TODO: should move this to middleware
+  if (!session || session.user.id === '4b442912-185a-4bfe-8c08-92978e6fe6e0') {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      initialSession: session,
+      user: session.user,
+    },
+  };
+};
 
 export default function AddPlace() {
   const [place, setPlace] = useState<

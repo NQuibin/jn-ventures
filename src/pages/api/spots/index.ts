@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } catch (e) {
     console.error(e);
-    res.status(500).end()
+    res.status(500).end();
   }
 };
 
