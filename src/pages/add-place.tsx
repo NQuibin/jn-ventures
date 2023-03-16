@@ -29,7 +29,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   } = await supabase.auth.getSession();
 
   // TODO: should move this to middleware
-  if (!session || session.user.email === 'nquibin.dev@gmail.com') {
+  if (!session || session.user.email !== 'nquibin.dev@gmail.com') {
     return {
       redirect: {
         destination: '/login',
