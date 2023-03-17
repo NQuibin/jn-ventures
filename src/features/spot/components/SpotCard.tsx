@@ -2,6 +2,7 @@ import type { Spot } from '@/services/spot/types';
 
 import Image from 'next/image';
 import _ from 'lodash';
+import classNames from 'classnames';
 import { Card, CardBody, Link, Tag, Icon } from '@chakra-ui/react';
 import { FaLink, FaMapMarkerAlt } from 'react-icons/fa';
 import { AiTwotoneHeart } from 'react-icons/ai';
@@ -51,28 +52,35 @@ export default function SpotCard({ spot }: SpotCardProps) {
           </div>
         </div>
         <h2 className="font-semibold text-lg mb-2">{spot.name}</h2>
-        <Link
-          rel="noreferrer"
-          href={spot.googleMapsLink}
-          target="_blank"
-          className="inline-flex items-center"
+        <div
+          className={classNames('flex', spot.image ? 'flex-col' : 'flex-wrap')}
         >
-          <Icon as={FaMapMarkerAlt} className="mr-1.5 mb-1" />
-          {_.capitalize(spot.area)}
-        </Link>
-        {spot.website && (
-          <div className="hidden sm:block">
-            <Link
-              rel="noreferrer"
-              href={spot.website}
-              target="_blank"
-              className="inline-flex items-center"
-            >
-              <Icon as={FaLink} className="mr-1.5" />
-              {extractUrlHost(spot.website)}
-            </Link>
-          </div>
-        )}
+          <Link
+            rel="noreferrer"
+            href={spot.googleMapsLink}
+            target="_blank"
+            className={classNames(
+              'inline-flex items-center',
+              !spot.image && 'mr-4'
+            )}
+          >
+            <Icon as={FaMapMarkerAlt} className="mr-1.5" />
+            {_.capitalize(spot.area)}
+          </Link>
+          {spot.website && (
+            <div className="hidden sm:inline-flex">
+              <Link
+                rel="noreferrer"
+                href={spot.website}
+                target="_blank"
+                className="inline-flex items-center"
+              >
+                <Icon as={FaLink} className="mr-1.5" />
+                {extractUrlHost(spot.website)}
+              </Link>
+            </div>
+          )}
+        </div>
       </CardBody>
     </Card>
   );

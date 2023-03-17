@@ -32,17 +32,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (!session || session.user.email !== 'nquibin.dev@gmail.com') {
     return {
       redirect: {
-        destination: '/login',
+        destination: encodeURI(`/login?deep-link=${ctx.req.url}`),
         permanent: false,
       },
     };
   }
 
   return {
-    props: {
-      initialSession: session,
-      user: session.user,
-    },
+    props: {},
   };
 };
 

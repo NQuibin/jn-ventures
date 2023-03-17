@@ -10,25 +10,44 @@ import PageFooter from '../features/common/components/PageFooter';
 import SpotLegend from '../features/spot/components/SpotLegend';
 
 interface HomeProps {
-  spots: Spot[];
+  imagedSpots: Spot[];
+  unimagedSpots: Spot[];
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
   const spots = await new SpotService().listSpots();
+
+  const [imagedSpots, unimagedSpots] = spots.reduce(
+    ([imagedSpots, unimagedSpots], currentSpot) =>
+      currentSpot.image
+        ? [[...imagedSpots, currentSpot], unimagedSpots]
+        : [imagedSpots, [...unimagedSpots, currentSpot]],
+    [[] as Spot[], [] as Spot[]]
+  );
+
   return {
-    props: { spots },
+    props: { imagedSpots, unimagedSpots },
   };
 };
 
 export default function Home({
-  spots,
+  imagedSpots,
+  unimagedSpots,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const buildImagedSpotCards = (): ReactNode[] => {
-    return spots.map(spot => (
+    return imagedSpots.map(spot => (
       <div
         key={spot.key}
         className="w-full py-2 sm:px-2 sm:w-1/2 md:w-1/3 lg:w-1/4"
       >
+        <SpotCard spot={spot} />
+      </div>
+    ));
+  };
+
+  const buildUnimagedSpotCards = (): ReactNode[] => {
+    return unimagedSpots.map(spot => (
+      <div key={spot.key} className="w-full p-2 sm:w-1/2">
         <SpotCard spot={spot} />
       </div>
     ));
@@ -41,6 +60,13 @@ export default function Home({
         <SpotLegend className="p-2 justify-end" />
         <div className="flex flex-col sm:flex-row sm:flex-wrap">
           {buildImagedSpotCards()}
+        </div>
+        <div className="pt-8">
+          <h2 className="px-2 text-3xl font-bold">OTHER SPOTS</h2>
+          <hr className="h-0.5 mb-2 w-full bg-neutral-300" />
+          <div className="flex flex-col sm:flex-row sm:flex-wrap">
+            {buildUnimagedSpotCards()}
+          </div>
         </div>
       </div>
       <PageFooter />
