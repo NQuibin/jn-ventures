@@ -5,7 +5,6 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import type { AppProps } from 'next/app';
 import ThemeProvider from '@/features/theme/providers/ThemeProvider';
-import { MAINTAINERS } from '@/services/db/constants';
 
 import '@/styles/globals.css';
 import '@fontsource/quattrocento-sans/400.css';
@@ -18,7 +17,7 @@ export default function App({
 
   return (
     <SessionContextProvider
-      supabaseClient={supabaseClient}
+      supabaseClient={supabaseClient as any}
       initialSession={pageProps.initialSession}
     >
       <ThemeProvider>

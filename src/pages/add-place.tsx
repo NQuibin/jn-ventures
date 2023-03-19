@@ -37,7 +37,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   } = await supabase.auth.getSession();
 
   // TODO: should move this to middleware
-  if (!session || session.user.email !== 'nquibin.dev@gmail.com') {
+  if (
+    !session ||
+    !['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
+      session.user.email || ''
+    )
+  ) {
     return {
       redirect: {
         destination: encodeURI(`/login?deep-link=${ctx.req.url}`),
