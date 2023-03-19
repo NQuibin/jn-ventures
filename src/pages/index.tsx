@@ -8,6 +8,10 @@ import PageHeader from '../features/common/components/PageHeader';
 import SpotCard from '../features/spot/components/SpotCard';
 import PageFooter from '../features/common/components/PageFooter';
 import SpotLegend from '../features/spot/components/SpotLegend';
+import { Icon } from '@chakra-ui/react';
+import { MdOutlineAddLocationAlt } from 'react-icons/md';
+import React from 'react';
+import { useRouter } from 'next/router';
 
 interface HomeProps {
   imagedSpots: Spot[];
@@ -34,6 +38,12 @@ export default function Home({
   imagedSpots,
   unimagedSpots,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter();
+
+  const handleAddPlaceClick = () => {
+    router.push('/add-place');
+  };
+
   const buildImagedSpotCards = (): ReactNode[] => {
     return imagedSpots.map(spot => (
       <div
@@ -55,7 +65,18 @@ export default function Home({
 
   return (
     <PageLayout headTitle="Food spots">
-      <PageHeader />
+      <PageHeader
+        rightSideContent={
+          <Icon
+            as={MdOutlineAddLocationAlt}
+            color="white"
+            w={6}
+            h={6}
+            className="cursor-pointer"
+            onClick={handleAddPlaceClick}
+          />
+        }
+      />
       <div className="max-w-6xl w-full mx-auto p-4">
         <SpotLegend className="p-2 justify-end" />
         <div className="flex flex-col sm:flex-row sm:flex-wrap">

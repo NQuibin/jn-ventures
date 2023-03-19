@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
-import { supabase } from '@/core/supabase';
+import { supabaseBrowserClient } from '@/core/supabase';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   // TODO: handle deep link
@@ -7,7 +7,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
 export default function Login() {
   async function signInWithGoogle() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabaseBrowserClient.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: '/add-login',

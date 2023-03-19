@@ -1,6 +1,9 @@
 import type { GetServerSidePropsContext } from 'next';
+import type { ToastPosition } from '@chakra-ui/react';
+import type { AxiosError } from 'axios';
+import type { HttpErrorResponseData } from '../utils/apiErrors';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageHeader from '../features/common/components/PageHeader';
 import PageLayout from '../features/common/components/PageLayout';
 import PageFooter from '../features/common/components/PageFooter';
@@ -13,11 +16,16 @@ import {
   CheckboxGroup,
   Divider,
   Button,
+  Icon,
 } from '@chakra-ui/react';
 import { TYPES } from '../services/spot/constants';
 import axios from 'axios';
 import { NewSpot, SpotType } from '../services/spot/types';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { MdOutlineHome } from 'react-icons/md';
+import { useRouter } from 'next/router';
+import { useToast } from '@chakra-ui/react';
+import { ERROR_CODES } from '../services/spot/errors';
 
 const LOCALITY_TYPE = 'locality';
 
@@ -51,6 +59,8 @@ export default function AddPlace() {
   const [visited, setVisited] = useState(false);
   const [favourite, setFavourite] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const router = useRouter();
+  const toast = useToast();
 
   const typeOptions = Object.values(TYPES).map(type => {
     return {
@@ -59,7 +69,17 @@ export default function AddPlace() {
     };
   });
 
+  const handleHomeClick = () => {
+    router.push('/');
+  };
+
   const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
+    // no place id means that the input has been cleared
+    if (!place.place_id) {
+      setPlace(undefined);
+      return;
+    }
+
     // find locality to get the area
     const locality = place.address_components?.find(ac =>
       ac.types.includes(LOCALITY_TYPE)
@@ -77,6 +97,13 @@ export default function AddPlace() {
   };
 
   const handleAddSpot = async () => {
+    const toastOptions = {
+      isClosable: true,
+      duration: 5000,
+      variant: 'top-accent',
+      position: 'top-right' as ToastPosition,
+    };
+
     if (place) {
       const data = {
         name: place.name,
@@ -90,10 +117,40 @@ export default function AddPlace() {
         favourite,
       } satisfies Partial<NewSpot>;
 
-      await axios.post('/api/spots', data);
-    }
+      try {
+        await axios.post('/api/spots', data);
 
-    // TODO: add exception handling
+        toast({
+          title: `${place.name} has been added!`,
+          status: 'success',
+          ...toastOptions,
+        });
+      } catch (e) {
+        let errorMessage =
+          'Cannot add place at this time, please try again later';
+
+        if (axios.isAxiosError(e)) {
+          const err = e as AxiosError;
+          const data = err.response?.data as HttpErrorResponseData;
+
+          if (data?.errorCode === ERROR_CODES.duplicateGooglePlaceId) {
+            errorMessage = 'This place has already been added';
+          }
+        }
+
+        toast({
+          title: errorMessage,
+          status: 'error',
+          ...toastOptions,
+        });
+      }
+    } else {
+      toast({
+        title: 'No place to add',
+        status: 'error',
+        ...toastOptions,
+      });
+    }
   };
 
   useEffect(() => {
@@ -103,7 +160,18 @@ export default function AddPlace() {
   return (
     <>
       <PageLayout headTitle="Add a spot">
-        <PageHeader />
+        <PageHeader
+          rightSideContent={
+            <Icon
+              as={MdOutlineHome}
+              color="white"
+              w={6}
+              h={6}
+              className="cursor-pointer"
+              onClick={handleHomeClick}
+            />
+          }
+        />
         <div className="flex flex-wrap justify-center max-w-xl w-full mx-auto p-8">
           <h1 className="text-2xl font-bold mb-4">
             Look for a new place to add
