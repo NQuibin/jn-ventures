@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Icon, InputGroup, Input, InputRightElement } from '@chakra-ui/react';
 import { RiCloseCircleLine } from 'react-icons/ri';
 
@@ -7,6 +7,7 @@ interface AutocompleteProps {
 }
 
 export default function Autocomplete({ onPlaceSelect }: AutocompleteProps) {
+  const [searchValue, setSearchValue] = useState('');
   const autoCompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const options = {
@@ -29,11 +30,20 @@ export default function Autocomplete({ onPlaceSelect }: AutocompleteProps) {
     }
   };
 
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   const handleClear = () => {
+    if (autoCompleteRef.current) {
+      autoCompleteRef.current.set('place', {});
+    }
+
     if (inputRef.current) {
       inputRef.current.value = '';
       inputRef.current?.focus();
-      inputRef.current.blur();
+
+      setSearchValue('');
     }
   };
 
@@ -57,12 +67,14 @@ export default function Autocomplete({ onPlaceSelect }: AutocompleteProps) {
           ref={inputRef}
           placeholder="Search for a place"
           bgColor="white"
+          onChange={handleOnChange}
         />
-        <InputRightElement>
+        <InputRightElement visibility={!!searchValue ? 'visible' : 'hidden'}>
           <Icon
             as={RiCloseCircleLine}
             className="cursor-pointer"
             onClick={handleClear}
+            color="gray.500"
           />
         </InputRightElement>
       </InputGroup>

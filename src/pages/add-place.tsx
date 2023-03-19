@@ -159,7 +159,7 @@ export default function AddPlace() {
 
   return (
     <>
-      <PageLayout headTitle="Add a spot">
+      <PageLayout headTitle="Add a place">
         <PageHeader
           rightSideContent={
             <Icon
