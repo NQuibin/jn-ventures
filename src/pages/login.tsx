@@ -16,23 +16,23 @@ import * as process from 'process';
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(ctx);
 
-  // const {
-  //   data: { session },
-  // } = await supabase.auth.getSession();
-  //
-  // if (
-  //   session &&
-  //   ['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
-  //     session.user.email || ''
-  //   )
-  // ) {
-  //   return {
-  //     redirect: {
-  //       destination: '/add-place',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (
+    session &&
+    ['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
+      session.user.email || ''
+    )
+  ) {
+    return {
+      redirect: {
+        destination: '/add-place',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {},
@@ -52,22 +52,21 @@ export default function Login() {
       context is null. This is used to do a client side redirect instead once
       the session is done loading and there is a valid session.
     */
-    // if (!isLoading && session) {
-    //   // Add fake loading while validating and redirecting
-    //   setIsValidatingUser(true);
-    //
-    //   if (
-    //     !['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
-    //       session.user.email || ''
-    //     )
-    //   ) {
-    //     setIsInvalidUser(true);
-    //     setIsValidatingUser(false);
-    //     supabaseClient.auth.signOut();
-    //   } else {
-    //     router.push('/add-place');
-    //   }
-    // }
+    if (!isLoading && session) {
+      setIsValidatingUser(true);
+
+      if (
+        !['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
+          session.user.email || ''
+        )
+      ) {
+        setIsInvalidUser(true);
+        setIsValidatingUser(false);
+        supabaseClient.auth.signOut();
+      } else {
+        router.push('/add-place');
+      }
+    }
   }, [isLoading, session]);
 
   const signInWithGoogle = async () => {
