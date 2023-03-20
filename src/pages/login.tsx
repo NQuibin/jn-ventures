@@ -16,23 +16,23 @@ import * as process from 'process';
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(ctx);
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (
-    session &&
-    ['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
-      session.user.email || ''
-    )
-  ) {
-    return {
-      redirect: {
-        destination: '/add-place',
-        permanent: false,
-      },
-    };
-  }
+  // const {
+  //   data: { session },
+  // } = await supabase.auth.getSession();
+  //
+  // if (
+  //   session &&
+  //   ['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
+  //     session.user.email || ''
+  //   )
+  // ) {
+  //   return {
+  //     redirect: {
+  //       destination: '/add-place',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   return {
     props: {},
@@ -52,23 +52,22 @@ export default function Login() {
       context is null. This is used to do a client side redirect instead once
       the session is done loading and there is a valid session.
     */
-
-    if (!isLoading && session) {
-      // Add fake loading while validating and redirecting
-      setIsValidatingUser(true);
-
-      if (
-        !['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
-          session.user.email || ''
-        )
-      ) {
-        setIsInvalidUser(true);
-        setIsValidatingUser(false);
-        supabaseClient.auth.signOut();
-      } else {
-        router.push('/add-place');
-      }
-    }
+    // if (!isLoading && session) {
+    //   // Add fake loading while validating and redirecting
+    //   setIsValidatingUser(true);
+    //
+    //   if (
+    //     !['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
+    //       session.user.email || ''
+    //     )
+    //   ) {
+    //     setIsInvalidUser(true);
+    //     setIsValidatingUser(false);
+    //     supabaseClient.auth.signOut();
+    //   } else {
+    //     router.push('/add-place');
+    //   }
+    // }
   }, [isLoading, session]);
 
   const signInWithGoogle = async () => {
@@ -91,19 +90,22 @@ export default function Login() {
             {isInvalidUser && (
               <Alert status="error" className="rounded-md mb-6">
                 <AlertIcon />
-                Sorry, you're not one of the lucky few to be a maintainer.
+                Sorry, you&apos;re not one of the lucky few to be a maintainer.
               </Alert>
             )}
             <div className="bg-white p-4 rounded shadow-md">
               <h2 className="text-lg font-bold mb-2">Login</h2>
               <p className="mb-6">
-                Only some people are allowed to maintain the site. Maybe you're
-                one of them!
+                Only some people are allowed to maintain the site. Maybe
+                you&apos;re one of them!
               </p>
               <Button
                 colorScheme="blue"
-                variant="outline"
-                leftIcon={<Icon as={FcGoogle} />}
+                leftIcon={
+                  <div className="bg-white rounded-full p-0.5">
+                    <Icon as={FcGoogle} w={5} h={5} />
+                  </div>
+                }
                 onClick={signInWithGoogle}
               >
                 Login
