@@ -250,7 +250,7 @@ export default function AddPlace() {
               </div>
               <Button
                 isLoading={isSubmitting}
-                isDisabled={!isFormValid}
+                isDisabled={!isFormValid || isSubmitting}
                 colorScheme="blue"
                 className="mt-4"
                 onClick={handleAddSpot}

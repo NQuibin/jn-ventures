@@ -28,7 +28,11 @@ export default function SpotCard({ spot }: SpotCardProps) {
     <Card direction={{ base: 'row', sm: 'column' }} height={{ base: '100%' }}>
       <CardBody p="0">
         <div className="flex">
-          <div className={classNames('p-3', 'basis-full', { 'basis-3/5': hasImage })}>
+          <div
+            className={classNames('p-3', 'basis-full', {
+              'basis-3/5': hasImage,
+            })}
+          >
             <div className="flex items-center justify-between mb-4">
               <Tag colorScheme={typeTagColor} fontSize="xs">
                 {spot.type.toUpperCase()}
@@ -44,25 +48,24 @@ export default function SpotCard({ spot }: SpotCardProps) {
                 {spot.visited && <Icon as={BsCheck2Circle} color="green" />}
               </div>
             </div>
-            <h2 className="font-semibold text-lg mb-2">{spot.name}</h2>
-            <div
-              className={classNames(
-                'flex',
-                spot.image ? 'flex-col' : 'flex-wrap'
-              )}
-            >
-              <Link
-                rel="noreferrer"
-                href={spot.googleMapsLink}
-                target="_blank"
-                className={classNames(
-                  'inline-flex items-center',
-                  !spot.image && 'mr-4'
-                )}
-              >
-                <Icon as={FaMapMarkerAlt} className="mr-1.5" />
-                {_.capitalize(spot.area)}
-              </Link>
+            <h2 className="font-semibold sm:text-lg mb-2">{spot.name}</h2>
+            <div className="flex flex-wrap">
+              <div className="w-full inline-flex sm:mb-1">
+                <Link
+                  rel="noreferrer"
+                  href={spot.googleMapsLink}
+                  target="_blank"
+                  className={classNames(
+                    'inline-flex items-center',
+                    !hasImage && 'mr-4'
+                  )}
+                >
+                  <Icon as={FaMapMarkerAlt} className="mr-1.5 mb-0.5 sm:mb-0" />
+                  <span className="text-sm sm:text-base">
+                    {_.capitalize(spot.area)}
+                  </span>
+                </Link>
+              </div>
               {spot.website && (
                 <div className="hidden sm:inline-flex">
                   <Link
