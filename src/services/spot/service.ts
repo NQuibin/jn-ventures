@@ -22,7 +22,6 @@ export class SpotService {
     const result = await supabase
       .from(TABLE_NAME)
       .select()
-      .order(TABLE_COLUMNS.image)
       .order(TABLE_COLUMNS.name);
     const spotRows = result.data as SpotRow[];
 

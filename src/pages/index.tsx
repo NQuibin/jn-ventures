@@ -48,7 +48,7 @@ export default function Home({
     return imagedSpots.map(spot => (
       <div
         key={spot.key}
-        className="w-full py-2 sm:px-2 sm:w-1/2 md:w-1/3 lg:w-1/4"
+        className="w-full p-2 sm:w-1/2"
       >
         <SpotCard spot={spot} />
       </div>
@@ -77,7 +77,7 @@ export default function Home({
           />
         }
       />
-      <div className="max-w-6xl w-full mx-auto p-4">
+      <div className="max-w-5xl w-full mx-auto p-4">
         <SpotLegend className="p-2 justify-end" />
         <div className="flex flex-col sm:flex-row sm:flex-wrap">
           {buildImagedSpotCards()}

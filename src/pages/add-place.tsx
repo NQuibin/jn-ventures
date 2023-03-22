@@ -57,6 +57,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 };
 
 export default function AddPlace() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [place, setPlace] = useState<
     { [key: string]: string | undefined } | undefined
   >(undefined);
@@ -102,6 +103,8 @@ export default function AddPlace() {
   };
 
   const handleAddSpot = async () => {
+    setIsSubmitting(true);
+
     const toastOptions = {
       isClosable: true,
       duration: 5000,
@@ -156,6 +159,8 @@ export default function AddPlace() {
         ...toastOptions,
       });
     }
+
+    setIsSubmitting(false);
   };
 
   useEffect(() => {
@@ -244,6 +249,7 @@ export default function AddPlace() {
                 </FormControl>
               </div>
               <Button
+                isLoading={isSubmitting}
                 isDisabled={!isFormValid}
                 colorScheme="blue"
                 className="mt-4"
