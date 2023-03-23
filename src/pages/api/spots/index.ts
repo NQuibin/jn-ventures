@@ -1,10 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NewSpot, SpotType } from '@/services/spot/types';
+
 import { SpotService } from '@/services/spot/service';
-import { NewSpot } from '@/services/spot/types';
-import { SpotServiceError } from '../../../services/spot/errors';
-import { BadRequestError, HttpError } from '../../../utils/apiErrors';
+import { SpotServiceError } from '@/services/spot/errors';
+import { BadRequestError, HttpError } from '@/utils/apiErrors';
 
 const spotService = new SpotService();
+
+interface ListSpotsQueryString {
+  type?: string;
+  visited?: string;
+  favourite?: string;
+}
+
+const listSpotsHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const queryParams = req.query as ListSpotsQueryString;
+  const filters = {
+    type: queryParams.type as SpotType,
+    visited: queryParams.visited === 'true',
+    favourite: queryParams.favourite === 'true',
+  };
+
+  const spot = await spotService.listSpots(filters);
+  res.status(200).json(spot);
+};
 
 const createSpotHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = req.body;
@@ -34,7 +53,9 @@ const createSpotHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    if (req.method === 'POST') {
+    if (req.method === 'GET') {
+      await listSpotsHandler(req, res);
+    } else if (req.method === 'POST') {
       await createSpotHandler(req, res);
     }
   } catch (e) {

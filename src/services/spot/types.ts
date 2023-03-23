@@ -32,7 +32,4 @@ export interface SpotRow
   created_at: Spot['createdAt'];
 }
 
-export type NewSpot = PartialBy<
-  Omit<Spot, 'key' | 'image' | 'updatedAt' | 'createdAt'>,
-  'visited' | 'favourite'
->;
+export type NewSpot = Omit<Spot, 'key' | 'image' | 'updatedAt' | 'createdAt'>;

@@ -12,6 +12,8 @@ import { Icon } from '@chakra-ui/react';
 import { MdOutlineAddLocationAlt } from 'react-icons/md';
 import React from 'react';
 import { useRouter } from 'next/router';
+import SpotFilters from '../features/spot/components/SpotFilters';
+import axios from 'axios';
 
 interface HomeProps {
   imagedSpots: Spot[];
@@ -46,10 +48,7 @@ export default function Home({
 
   const buildImagedSpotCards = (): ReactNode[] => {
     return imagedSpots.map(spot => (
-      <div
-        key={spot.key}
-        className="w-full p-2 sm:w-1/2"
-      >
+      <div key={spot.key} className="w-full p-2 sm:w-1/2">
         <SpotCard spot={spot} />
       </div>
     ));
@@ -61,6 +60,16 @@ export default function Home({
         <SpotCard spot={spot} />
       </div>
     ));
+  };
+
+  const handleFilter = async (
+    filterKey: string,
+    filterValue: string | boolean
+  ) => {
+    const res = await axios.get('/api/spots', {
+      params: { [filterKey]: filterValue },
+    });
+    console.log(res.data)
   };
 
   return (
@@ -78,7 +87,7 @@ export default function Home({
         }
       />
       <div className="max-w-5xl w-full mx-auto p-4">
-        <SpotLegend className="p-2 justify-end" />
+        <SpotLegend className="p-2" />
         <div className="flex flex-col sm:flex-row sm:flex-wrap">
           {buildImagedSpotCards()}
         </div>

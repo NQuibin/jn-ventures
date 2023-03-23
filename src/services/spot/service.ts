@@ -1,5 +1,6 @@
+import type { NewSpot, Spot, SpotRow, SpotType } from './types';
+
 import { supabase } from '@/core/supabase';
-import { NewSpot, Spot, SpotRow } from './types';
 import {
   convertObjKeysToCamelCase,
   convertObjKeysToSnakeCase,
@@ -11,18 +12,39 @@ const TABLE_COLUMNS = {
   key: 'key',
   name: 'name',
   image: 'image',
+  type: 'type',
+  visited: 'visited',
+  favourite: 'favourite',
   googlePlaceId: 'google_place_id',
 };
 
 // TODO add error validations
 // TODO check for unique google place id
 
+interface ListSpotsFilters {
+  type: SpotType;
+  visited: boolean;
+  favourite: boolean;
+}
+
 export class SpotService {
-  async listSpots(): Promise<Spot[]> {
-    const result = await supabase
-      .from(TABLE_NAME)
-      .select()
-      .order(TABLE_COLUMNS.name);
+  async listSpots(filters?: ListSpotsFilters): Promise<Spot[]> {
+    let query = supabase.from(TABLE_NAME).select().order(TABLE_COLUMNS.name);
+
+    if (filters) {
+      Object.entries(filters).forEach(entry => {
+        const [filterKey, filterValue] = entry as [
+          keyof ListSpotsFilters,
+          SpotType | boolean
+        ];
+
+        if (filterValue !== undefined && filterKey in TABLE_COLUMNS) {
+          query = query.eq(filterKey, filterValue);
+        }
+      });
+    }
+
+    const result = await query;
     const spotRows = result.data as SpotRow[];
 
     return convertObjKeysToCamelCase(spotRows) as Spot[];

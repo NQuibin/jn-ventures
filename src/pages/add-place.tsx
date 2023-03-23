@@ -2,6 +2,7 @@ import type { GetServerSidePropsContext } from 'next';
 import type { ToastPosition } from '@chakra-ui/react';
 import type { AxiosError } from 'axios';
 import type { HttpErrorResponseData } from '../utils/apiErrors';
+import type { NewSpot, SpotType } from '../services/spot/types';
 
 import React, { useState, useEffect } from 'react';
 import PageHeader from '../features/common/components/PageHeader';
@@ -20,7 +21,6 @@ import {
 } from '@chakra-ui/react';
 import { TYPES } from '../services/spot/constants';
 import axios from 'axios';
-import { NewSpot, SpotType } from '../services/spot/types';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { MdOutlineHome } from 'react-icons/md';
 import { useRouter } from 'next/router';
@@ -83,6 +83,7 @@ export default function AddPlace() {
     // no place id means that the input has been cleared
     if (!place.place_id) {
       setPlace(undefined);
+      setType(undefined);
       return;
     }
 
@@ -216,12 +217,12 @@ export default function AddPlace() {
                 <FormControl isRequired>
                   <FormLabel fontWeight="bold">Type</FormLabel>
                   <Select
-                    placeholder="Select spot"
+                    placeholder="..."
                     value={type}
                     onChange={e => setType(e.target.value as SpotType)}
                   >
                     {typeOptions.map(type => (
-                      <option key={type.value} value={type.value}>
+                      <option key={type.value} color="" value={type.value}>
                         {type.label}
                       </option>
                     ))}
