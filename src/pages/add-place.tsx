@@ -1,30 +1,18 @@
 import type { GetServerSidePropsContext } from 'next';
-import type { ToastPosition } from '@chakra-ui/react';
+import type { ArgsProps } from 'antd/es/notification/interface';
 import type { AxiosError } from 'axios';
 import type { HttpErrorResponseData } from '../utils/apiErrors';
 import type { NewSpot, SpotType } from '../services/spot/types';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PageHeader from '../features/common/components/PageHeader';
 import PageLayout from '../features/common/components/PageLayout';
 import PageFooter from '../features/common/components/PageFooter';
 import Autocomplete from '../features/autocomplete/components/Autocomplete';
-import {
-  FormControl,
-  FormLabel,
-  Select,
-  Checkbox,
-  CheckboxGroup,
-  Divider,
-  Button,
-  Icon,
-} from '@chakra-ui/react';
+import { Divider, Form, Button, Select, Checkbox, notification } from 'antd';
 import { TYPES } from '../services/spot/constants';
 import axios from 'axios';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { MdOutlineHome } from 'react-icons/md';
-import { useRouter } from 'next/router';
-import { useToast } from '@chakra-ui/react';
 import { ERROR_CODES } from '../services/spot/errors';
 
 const LOCALITY_TYPE = 'locality';
@@ -61,12 +49,8 @@ export default function AddPlace() {
   const [place, setPlace] = useState<
     { [key: string]: string | undefined } | undefined
   >(undefined);
-  const [type, setType] = useState<SpotType | undefined>();
-  const [visited, setVisited] = useState(false);
-  const [favourite, setFavourite] = useState(false);
-  const [isFormValid, setIsFormValid] = useState(false);
-  const router = useRouter();
-  const toast = useToast();
+  const [form] = Form.useForm();
+  const [api, contextHolder] = notification.useNotification();
 
   const typeOptions = Object.values(TYPES).map(type => {
     return {
@@ -75,15 +59,11 @@ export default function AddPlace() {
     };
   });
 
-  const handleHomeClick = () => {
-    router.push('/');
-  };
-
   const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
     // no place id means that the input has been cleared
     if (!place.place_id) {
       setPlace(undefined);
-      setType(undefined);
+      form.resetFields();
       return;
     }
 
@@ -103,14 +83,16 @@ export default function AddPlace() {
     });
   };
 
-  const handleAddSpot = async () => {
+  const handleAddSpot = async (values: {
+    type: SpotType;
+    visited: boolean;
+    favourite: boolean;
+  }) => {
     setIsSubmitting(true);
 
-    const toastOptions = {
-      isClosable: true,
-      duration: 5000,
-      variant: 'top-accent',
-      position: 'top-right' as ToastPosition,
+    const toastOptions: Partial<ArgsProps> = {
+      duration: 2,
+      placement: 'bottom',
     };
 
     if (place) {
@@ -121,17 +103,17 @@ export default function AddPlace() {
         website: place.website,
         googlePlaceId: place.placeId,
         googleMapsLink: place.mapsLink,
-        type,
-        visited,
-        favourite,
+        type: values.type,
+        visited: values.visited,
+        favourite: values.favourite,
       } satisfies Partial<NewSpot>;
 
       try {
         await axios.post('/api/spots', data);
 
-        toast({
-          title: `${place.name} has been added!`,
-          status: 'success',
+        api.success({
+          message: 'Place added',
+          description: `${place.name} has been added!`,
           ...toastOptions,
         });
       } catch (e) {
@@ -147,16 +129,16 @@ export default function AddPlace() {
           }
         }
 
-        toast({
-          title: errorMessage,
-          status: 'error',
+        api.error({
+          message: 'Place cannot be added',
+          description: errorMessage,
           ...toastOptions,
         });
       }
     } else {
-      toast({
-        title: 'No place to add',
-        status: 'error',
+      api.error({
+        message: 'Place cannot be added',
+        description: 'No place to add',
         ...toastOptions,
       });
     }
@@ -164,32 +146,18 @@ export default function AddPlace() {
     setIsSubmitting(false);
   };
 
-  useEffect(() => {
-    setIsFormValid(!!type);
-  }, [type]);
-
   return (
     <>
+      {contextHolder}
       <PageLayout headTitle="Add a place">
-        <PageHeader
-          rightSideContent={
-            <Icon
-              as={MdOutlineHome}
-              color="white"
-              w={6}
-              h={6}
-              className="cursor-pointer"
-              onClick={handleHomeClick}
-            />
-          }
-        />
+        <PageHeader />
         <div className="flex flex-wrap justify-center max-w-xl w-full mx-auto p-8">
           <h1 className="text-2xl font-bold mb-4">
             Look for a new place to add
           </h1>
           <Autocomplete onPlaceSelect={handlePlaceSelect} />
           {place && (
-            <div className="w-full mt-4 p-4 bg-white rounded shadow-md">
+            <div className="w-full mt-4 p-4 bg-white rounded border-2 border-neutral-200">
               <div>
                 <div className="mb-2">
                   <label className="font-bold">Name:</label>
@@ -213,51 +181,50 @@ export default function AddPlace() {
                 </div>
               </div>
               <Divider className="my-4" />
-              <div>
-                <FormControl isRequired>
-                  <FormLabel fontWeight="bold">Type</FormLabel>
-                  <Select
-                    placeholder="..."
-                    value={type}
-                    onChange={e => setType(e.target.value as SpotType)}
-                  >
+              <Form
+                layout="vertical"
+                form={form}
+                disabled={isSubmitting}
+                onFinish={handleAddSpot}
+              >
+                <Form.Item
+                  label="Type"
+                  name="type"
+                  className="mb-0"
+                  rules={[
+                    { required: true, message: 'The place type is required' },
+                  ]}
+                >
+                  <Select placeholder="Select a type">
                     {typeOptions.map(type => (
-                      <option key={type.value} color="" value={type.value}>
+                      <Select.Option
+                        key={type.value}
+                        color=""
+                        value={type.value}
+                      >
                         {type.label}
-                      </option>
+                      </Select.Option>
                     ))}
                   </Select>
-                </FormControl>
-                <FormControl className="mt-2">
-                  <CheckboxGroup colorScheme="blue">
-                    <div className="flex flex-wrap gap-x-4">
-                      <Checkbox
-                        isChecked={visited}
-                        value="visited"
-                        onChange={e => setVisited(e.target.checked)}
-                      >
-                        Visited
-                      </Checkbox>
-                      <Checkbox
-                        isChecked={favourite}
-                        value="favourite"
-                        onChange={e => setFavourite(e.target.checked)}
-                      >
-                        Favourite
-                      </Checkbox>
-                    </div>
-                  </CheckboxGroup>
-                </FormControl>
-              </div>
-              <Button
-                isLoading={isSubmitting}
-                isDisabled={!isFormValid || isSubmitting}
-                colorScheme="blue"
-                className="mt-4"
-                onClick={handleAddSpot}
-              >
-                Add spot
-              </Button>
+                </Form.Item>
+                <div className="flex">
+                  <Form.Item name="visited" valuePropName="checked">
+                    <Checkbox>Visited</Checkbox>
+                  </Form.Item>
+                  <Form.Item name="favourite" valuePropName="checked">
+                    <Checkbox>Favourite</Checkbox>
+                  </Form.Item>
+                </div>
+                <div className="flex justify-end">
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={isSubmitting}
+                  >
+                    Add spot
+                  </Button>
+                </div>
+              </Form>
             </div>
           )}
         </div>

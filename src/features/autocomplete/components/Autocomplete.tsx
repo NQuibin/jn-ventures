@@ -1,5 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Icon, InputGroup, Input, InputRightElement } from '@chakra-ui/react';
+import type { InputRef } from 'antd';
+
+import { useEffect, useRef, useState } from 'react';
+// import { Icon, InputGroup, Input, InputRightElement } from '@chakra-ui/react';
+import { Input } from 'antd';
 import { RiCloseCircleLine } from 'react-icons/ri';
 
 interface AutocompleteProps {
@@ -9,7 +12,7 @@ interface AutocompleteProps {
 export default function Autocomplete({ onPlaceSelect }: AutocompleteProps) {
   const [searchValue, setSearchValue] = useState('');
   const autoCompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<InputRef>(null);
   const options = {
     componentRestrictions: { country: 'ca' },
     fields: [
@@ -19,6 +22,7 @@ export default function Autocomplete({ onPlaceSelect }: AutocompleteProps) {
       'website',
       'url',
       'address_components',
+      'adr_address',
     ],
     types: ['establishment'],
   };
@@ -27,30 +31,33 @@ export default function Autocomplete({ onPlaceSelect }: AutocompleteProps) {
     if (autoCompleteRef.current) {
       const place = await autoCompleteRef.current.getPlace();
       onPlaceSelect(place);
+
+      if (place.place_id) {
+        setSearchValue(`${place.name}, ${place.formatted_address}`);
+      }
     }
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
+    const value = e.target.value;
 
-  const handleClear = () => {
-    if (autoCompleteRef.current) {
+    setSearchValue(value);
+
+    // clear autocomplete when value is cleared
+    if (!value && autoCompleteRef.current && inputRef.current?.input) {
       autoCompleteRef.current.set('place', {});
-    }
 
-    if (inputRef.current) {
-      inputRef.current.value = '';
-      inputRef.current?.focus();
-
-      setSearchValue('');
+      // to remove prediction dropdown
+      inputRef.current.input.value = ''
+      inputRef.current.input.blur();
+      inputRef.current.input.focus();
     }
   };
 
   useEffect(() => {
-    if (inputRef.current) {
+    if (inputRef.current?.input) {
       autoCompleteRef.current = new google.maps.places.Autocomplete(
-        inputRef.current,
+        inputRef.current.input,
         options
       );
     }
@@ -62,22 +69,13 @@ export default function Autocomplete({ onPlaceSelect }: AutocompleteProps) {
 
   return (
     <div className="w-full">
-      <InputGroup>
-        <Input
-          ref={inputRef}
-          placeholder="Search for a place"
-          bgColor="white"
-          onChange={handleOnChange}
-        />
-        <InputRightElement visibility={!!searchValue ? 'visible' : 'hidden'}>
-          <Icon
-            as={RiCloseCircleLine}
-            className="cursor-pointer"
-            onClick={handleClear}
-            color="gray.500"
-          />
-        </InputRightElement>
-      </InputGroup>
+      <Input
+        allowClear
+        placeholder="Search for a place"
+        ref={inputRef}
+        value={searchValue}
+        onChange={handleOnChange}
+      />
     </div>
   );
 }

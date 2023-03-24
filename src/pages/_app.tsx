@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app';
 import ThemeProvider from '@/features/theme/providers/ThemeProvider';
 
 import '@/styles/globals.css';
+import 'antd/dist/reset.css';
 import '@fontsource/quattrocento-sans/400.css';
 
 export default function App({
