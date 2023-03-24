@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import classNames from 'classnames';
-import { Icon } from '@chakra-ui/react';
-import { MdAdd } from 'react-icons/md';
 import { useRouter } from 'next/router';
 
 import Logo from 'public/logo.png';

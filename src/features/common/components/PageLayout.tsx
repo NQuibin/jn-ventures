@@ -13,11 +13,21 @@ export default function PageLayout({ headTitle, children }: PageLayoutProps) {
     <>
       <Head>
         <title>{title}</title>
-        <meta name="description" content="Jeanelle and Nik's adventures" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          key="description"
+          name="description"
+          content="Jeanelle and Nik's adventures"
+        />
+        <meta
+          key="viewport"
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <main className="bg-neutral-100 flex flex-col min-h-screen">{children}</main>
+      <main className="bg-neutral-100 flex flex-col min-h-screen">
+        {children}
+      </main>
     </>
   );
 }
