@@ -14,31 +14,33 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import SpotFilters from '../features/spot/components/SpotFilters';
 import axios from 'axios';
+import { Divider } from 'antd';
 
 interface HomeProps {
-  imagedSpots: Spot[];
-  unimagedSpots: Spot[];
+  alphabetizedSpots: { [key: string]: Spot[] };
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
   const spots = await new SpotService().listSpots();
 
-  const [imagedSpots, unimagedSpots] = spots.reduce(
-    ([imagedSpots, unimagedSpots], currentSpot) =>
-      currentSpot.image
-        ? [[...imagedSpots, currentSpot], unimagedSpots]
-        : [imagedSpots, [...unimagedSpots, currentSpot]],
-    [[] as Spot[], [] as Spot[]]
-  );
+  const alphabetizedSpots: { [key: string]: Spot[] } = {};
+  spots.forEach(spot => {
+    const letter = spot.name.charAt(0).toUpperCase();
+
+    if (alphabetizedSpots[letter]) {
+      alphabetizedSpots[letter].push(spot);
+    } else {
+      alphabetizedSpots[letter] = [spot];
+    }
+  });
 
   return {
-    props: { imagedSpots, unimagedSpots },
+    props: { alphabetizedSpots },
   };
 };
 
 export default function Home({
-  imagedSpots,
-  unimagedSpots,
+  alphabetizedSpots,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
 
@@ -46,20 +48,30 @@ export default function Home({
     router.push('/add-place');
   };
 
-  const buildImagedSpotCards = (): ReactNode[] => {
-    return imagedSpots.map(spot => (
+  const buildSpotCards = (spots: Spot[]): ReactNode[] => {
+    return spots.map(spot => (
       <div key={spot.key} className="w-full p-2 sm:w-1/2">
         <SpotCard spot={spot} />
       </div>
     ));
   };
 
-  const buildUnimagedSpotCards = (): ReactNode[] => {
-    return unimagedSpots.map(spot => (
-      <div key={spot.key} className="w-full p-2 sm:w-1/2">
-        <SpotCard spot={spot} />
-      </div>
-    ));
+  const buildSections = (): ReactNode[] => {
+    const keys = Object.keys(alphabetizedSpots).sort();
+    const sections: ReactNode[] = [];
+
+    keys.forEach(key => {
+      sections.push(
+        <div key={key} className="flex flex-wrap">
+          <Divider orientation="left">
+            <h2 className="text-3xl font-bold">{key}</h2>
+          </Divider>
+          {buildSpotCards(alphabetizedSpots[key])}
+        </div>
+      );
+    });
+
+    return sections;
   };
 
   const handleFilter = async (
@@ -69,7 +81,6 @@ export default function Home({
     const res = await axios.get('/api/spots', {
       params: { [filterKey]: filterValue },
     });
-    console.log(res.data)
   };
 
   return (
@@ -87,17 +98,8 @@ export default function Home({
         }
       />
       <div className="max-w-5xl w-full mx-auto p-4">
-        <SpotLegend className="p-2" />
-        <div className="flex flex-col sm:flex-row sm:flex-wrap">
-          {buildImagedSpotCards()}
-        </div>
-        <div className="pt-8">
-          <h2 className="px-2 text-3xl font-bold">OTHER SPOTS</h2>
-          <hr className="h-0.5 mb-2 w-full bg-neutral-300" />
-          <div className="flex flex-col sm:flex-row sm:flex-wrap">
-            {buildUnimagedSpotCards()}
-          </div>
-        </div>
+        <SpotLegend />
+        {buildSections()}
       </div>
       <PageFooter />
     </PageLayout>

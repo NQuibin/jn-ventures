@@ -5,6 +5,6 @@ export const TYPE_COLOR_TAG: { [key in SpotType]: string } = {
   bar: 'orange',
   brunch: 'green',
   cafe: 'blue',
-  dessert: 'yellow',
+  dessert: 'gold',
   restaurant: 'purple',
 };

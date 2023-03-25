@@ -2,14 +2,17 @@ import type { Spot } from '@/services/spot/types';
 
 import Image from 'next/image';
 import _ from 'lodash';
-import classNames from 'classnames';
-import { Card, CardBody, Link, Tag, Icon } from '@chakra-ui/react';
-import { FaLink, FaMapMarkerAlt } from 'react-icons/fa';
-import { AiTwotoneHeart } from 'react-icons/ai';
-import { BsCheck2Circle } from 'react-icons/bs';
+import { Tag } from 'antd';
+import {
+  CheckCircleTwoTone,
+  EnvironmentOutlined,
+  HeartTwoTone,
+  LinkOutlined,
+} from '@ant-design/icons';
 import { buildImageUrl } from '@/utils/buildImageUrl';
 import { BUCKET_SPOTS } from '@/core/supabase/constants';
 import { TYPE_COLOR_TAG } from '../constants';
+import classNames from 'classnames';
 
 interface SpotCardProps {
   spot: Spot;
@@ -25,75 +28,62 @@ export default function SpotCard({ spot }: SpotCardProps) {
   };
 
   return (
-    <Card direction={{ base: 'row', sm: 'column' }} height={{ base: '100%' }}>
-      <CardBody p="0">
-        <div className="flex">
-          <div
-            className={classNames('p-3', 'basis-full', {
-              'basis-3/5': hasImage,
-            })}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <Tag colorScheme={typeTagColor} fontSize="xs">
-                {spot.type.toUpperCase()}
-              </Tag>
-              <div>
-                {spot.favourite && (
-                  <Icon
-                    as={AiTwotoneHeart}
-                    color="#eb2f96"
-                    className="mr-0.5"
-                  />
-                )}
-                {spot.visited && <Icon as={BsCheck2Circle} color="green" />}
-              </div>
-            </div>
-            <h2 className="font-semibold sm:text-lg mb-2">{spot.name}</h2>
-            <div className="flex flex-wrap">
-              <div className="w-full inline-flex sm:mb-1">
-                <Link
-                  rel="noreferrer"
-                  href={spot.googleMapsLink}
-                  target="_blank"
-                  className={classNames(
-                    'inline-flex items-center',
-                    !hasImage && 'mr-4'
-                  )}
-                >
-                  <Icon as={FaMapMarkerAlt} className="mr-1.5 mb-0.5 sm:mb-0" />
-                  <span className="text-sm sm:text-base">
-                    {_.capitalize(spot.area)}
-                  </span>
-                </Link>
-              </div>
-              {spot.website && (
-                <div className="hidden sm:inline-flex">
-                  <Link
-                    rel="noreferrer"
-                    href={spot.website}
-                    target="_blank"
-                    className="inline-flex items-center"
-                  >
-                    <Icon as={FaLink} className="mr-1.5" />
-                    {extractUrlHost(spot.website)}
-                  </Link>
-                </div>
-              )}
-            </div>
+    <div className="flex justify-between p-3 h-full bg-white rounded border-2 border-neutral-200">
+      <div
+        className={classNames('pr-2', {
+          'w-full': !hasImage,
+          'w-3/5': hasImage,
+        })}
+      >
+        <div className="flex items-center mb-4">
+          <Tag color={typeTagColor} className="text-[10px]">
+            {spot.type.toUpperCase()}
+          </Tag>
+          <div>
+            {spot.favourite && (
+              <HeartTwoTone twoToneColor="#eb2f96" className="mr-1" />
+            )}
+            {spot.visited && <CheckCircleTwoTone twoToneColor="#52c41a" />}
           </div>
-
-          {hasImage && (
-            <div className="relative shrink-0 basis-2/5">
-              <Image
-                fill
-                src={imageUrl}
-                alt={`${spot.name} card image`}
-                className="object-cover rounded-r-md"
-              />
-            </div>
-          )}
         </div>
-      </CardBody>
-    </Card>
+        <div>
+          <h2 className="font-semibold mb-2">{spot.name}</h2>
+          <div className="w-full inline-flex overflow-hidden sm:mb-1">
+            <a
+              rel="noreferrer"
+              href={spot.googleMapsLink}
+              target="_blank"
+              className="inline-flex items-center mr-4"
+            >
+              <EnvironmentOutlined className="mb-0.5 mr-1" />
+              <span className="text-sm">{_.capitalize(spot.area)}</span>
+            </a>
+            {spot.website && (
+              <a
+                rel="noreferrer"
+                href={spot.website}
+                target="_blank"
+                className="inline-flex items-center truncate"
+              >
+                <LinkOutlined className="mr-1" />
+                <span className="text-sm truncate">
+                  {extractUrlHost(spot.website)}
+                </span>
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+      {hasImage && (
+        <div className="relative shrink-0 w-24 h-24">
+          <Image
+            fill
+            src={imageUrl}
+            alt={`${spot.name} card image`}
+            className="object-cover rounded shadow shadow-neutral-400"
+          />
+        </div>
+      )}
+    </div>
   );
 }
