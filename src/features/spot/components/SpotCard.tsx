@@ -32,7 +32,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
       <div
         className={classNames('pr-4', {
           'w-full': !hasImage,
-          'w-3/5': hasImage,
+          'w-2/3': hasImage,
         })}
       >
         <div className="flex items-center mb-4">
@@ -47,7 +47,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
           </div>
         </div>
         <div>
-          <h2 className="font-semibold mb-2">{spot.name}</h2>
+          <h2 className="font-semibold text-base mb-2">{spot.name}</h2>
           <div className="w-full inline-flex overflow-hidden sm:mb-1">
             <a
               rel="noreferrer"
@@ -56,7 +56,9 @@ export default function SpotCard({ spot }: SpotCardProps) {
               className="inline-flex items-center mr-4"
             >
               <EnvironmentOutlined className="mb-0.5 mr-1" />
-              <span className="text-sm">{_.capitalize(spot.area)}</span>
+              <span className="text-sm text-black">
+                {_.capitalize(spot.area)}
+              </span>
             </a>
             {spot.website && (
               <a
@@ -66,7 +68,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
                 className="inline-flex items-center truncate"
               >
                 <LinkOutlined className="mr-1" />
-                <span className="text-sm truncate">
+                <span className="text-sm truncate text-black">
                   {extractUrlHost(spot.website)}
                 </span>
               </a>
@@ -75,7 +77,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
         </div>
       </div>
       {hasImage && (
-        <div className="relative shrink-0 w-2/5 h-full">
+        <div className="relative shrink-0 w-1/3 h-full">
           <Image
             fill
             src={imageUrl}

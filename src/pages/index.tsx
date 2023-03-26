@@ -54,7 +54,7 @@ export default function Home({
       sections.push(
         <div key={key} className="flex flex-wrap">
           <Divider orientation="left">
-            <h2 className="text-3xl font-bold">{key}</h2>
+            <h2 className="mb-0 text-3xl font-bold">{key}</h2>
           </Divider>
           {buildSpotCards(alphabetizedSpots[key])}
         </div>
