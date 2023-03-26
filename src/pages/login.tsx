@@ -14,25 +14,25 @@ import { useRouter } from 'next/router';
 import { FcGoogle } from 'react-icons/fc';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  // const supabase = createServerSupabaseClient(ctx);
-  //
-  // const {
-  //   data: { session },
-  // } = await supabase.auth.getSession();
-  //
-  // if (
-  //   session &&
-  //   ['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
-  //     session.user.email || ''
-  //   )
-  // ) {
-  //   return {
-  //     redirect: {
-  //       destination: '/add-place',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  const supabase = createServerSupabaseClient(ctx);
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (
+    session &&
+    ['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
+      session.user.email || ''
+    )
+  ) {
+    return {
+      redirect: {
+        destination: '/add-place',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {},
@@ -46,28 +46,28 @@ export default function Login() {
   const router = useRouter();
   const supabaseClient = useSupabaseClient();
 
-  // useEffect(() => {
-  //   /*
-  //     There's a bug where on initial sign in, the session from the server side
-  //     context is null. This is used to do a client side redirect instead once
-  //     the session is done loading and there is a valid session.
-  //   */
-  //   if (!isLoading && session) {
-  //     setIsValidatingUser(true);
-  //
-  //     if (
-  //       !['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
-  //         session.user.email || ''
-  //       )
-  //     ) {
-  //       setIsInvalidUser(true);
-  //       setIsValidatingUser(false);
-  //       supabaseClient.auth.signOut();
-  //     } else {
-  //       router.push('/add-place');
-  //     }
-  //   }
-  // }, [isLoading, session]);
+  useEffect(() => {
+    /*
+      There's a bug where on initial sign in, the session from the server side
+      context is null. This is used to do a client side redirect instead once
+      the session is done loading and there is a valid session.
+    */
+    if (!isLoading && session) {
+      setIsValidatingUser(true);
+
+      if (
+        !['nquibin.dev@gmail.com', 'jeanelle.dimayuga@gmail.com'].includes(
+          session.user.email || ''
+        )
+      ) {
+        setIsInvalidUser(true);
+        setIsValidatingUser(false);
+        supabaseClient.auth.signOut();
+      } else {
+        router.push('/add-place');
+      }
+    }
+  }, [isLoading, session]);
 
   const signInWithGoogle = async () => {
     const { data, error } = await supabaseClient.auth.signInWithOAuth({
@@ -99,7 +99,7 @@ export default function Login() {
                 className="mb-6 w-full"
               />
             )}
-            <div className="bg-white p-4 rounded border-2 border-neutral-200">
+            <div className="bg-white p-4 rounded border-2 border-solid border-neutral-200">
               <h2 className="text-lg font-bold mb-2">Login</h2>
               <p className="mb-6">
                 Only some people are allowed to maintain the site. Maybe

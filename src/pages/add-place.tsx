@@ -157,7 +157,7 @@ export default function AddPlace() {
           </h1>
           <Autocomplete onPlaceSelect={handlePlaceSelect} />
           {place && (
-            <div className="w-full mt-4 p-4 bg-white rounded border-2 border-neutral-200">
+            <div className="w-full mt-4 p-4 bg-white rounded border-2 border-solid border-neutral-200">
               <div>
                 <div className="mb-2">
                   <label className="font-bold">Name:</label>
