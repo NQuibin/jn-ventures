@@ -8,11 +8,7 @@ import PageHeader from '../features/common/components/PageHeader';
 import SpotCard from '../features/spot/components/SpotCard';
 import PageFooter from '../features/common/components/PageFooter';
 import SpotLegend from '../features/spot/components/SpotLegend';
-import { Icon } from '@chakra-ui/react';
-import { MdOutlineAddLocationAlt } from 'react-icons/md';
 import React from 'react';
-import { useRouter } from 'next/router';
-import SpotFilters from '../features/spot/components/SpotFilters';
 import axios from 'axios';
 import { Divider } from 'antd';
 
@@ -42,12 +38,6 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
 export default function Home({
   alphabetizedSpots,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
-
-  const handleAddPlaceClick = () => {
-    router.push('/add-place');
-  };
-
   const buildSpotCards = (spots: Spot[]): ReactNode[] => {
     return spots.map(spot => (
       <div key={spot.key} className="w-full p-2 sm:w-1/2">
@@ -85,20 +75,9 @@ export default function Home({
 
   return (
     <PageLayout headTitle="Food spots">
-      <PageHeader
-        rightSideContent={
-          <Icon
-            as={MdOutlineAddLocationAlt}
-            color="white"
-            w={6}
-            h={6}
-            className="cursor-pointer"
-            onClick={handleAddPlaceClick}
-          />
-        }
-      />
+      <PageHeader showAddPlaceLink />
       <div className="max-w-5xl w-full mx-auto p-4">
-        <SpotLegend />
+        <SpotLegend className="justify-end" />
         {buildSections()}
       </div>
       <PageFooter />

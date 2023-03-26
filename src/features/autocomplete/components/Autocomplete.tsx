@@ -1,9 +1,7 @@
 import type { InputRef } from 'antd';
 
 import { useEffect, useRef, useState } from 'react';
-// import { Icon, InputGroup, Input, InputRightElement } from '@chakra-ui/react';
 import { Input } from 'antd';
-import { RiCloseCircleLine } from 'react-icons/ri';
 
 interface AutocompleteProps {
   onPlaceSelect(place: google.maps.places.PlaceResult): void;
@@ -48,7 +46,7 @@ export default function Autocomplete({ onPlaceSelect }: AutocompleteProps) {
       autoCompleteRef.current.set('place', {});
 
       // to remove prediction dropdown
-      inputRef.current.input.value = ''
+      inputRef.current.input.value = '';
       inputRef.current.input.blur();
       inputRef.current.input.focus();
     }

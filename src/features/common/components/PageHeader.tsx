@@ -1,19 +1,23 @@
 import Image from 'next/image';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-
+import { Button } from 'antd';
+import { MdOutlineAddLocationAlt } from 'react-icons/md';
 import Logo from 'public/logo.png';
-import { ReactNode } from 'react';
 
 interface PageHeaderProps {
-  rightSideContent?: ReactNode;
+  showAddPlaceLink?: boolean;
 }
 
-export default function PageHeader({ rightSideContent }: PageHeaderProps) {
+export default function PageHeader({ showAddPlaceLink }: PageHeaderProps) {
   const router = useRouter();
 
   const handleLogoClick = () => {
     router.push('/');
+  };
+
+  const handleAddPlaceClick = () => {
+    router.push('/add-place');
   };
 
   return (
@@ -22,7 +26,7 @@ export default function PageHeader({ rightSideContent }: PageHeaderProps) {
       <div className="max-w-6xl p-4 w-full flex justify-center items-center">
         <div
           className={classNames('relative w-48 h-20 cursor-pointer', {
-            'ml-auto': !!rightSideContent,
+            'ml-auto': !!showAddPlaceLink,
           })}
           onClick={handleLogoClick}
         >
@@ -33,8 +37,19 @@ export default function PageHeader({ rightSideContent }: PageHeaderProps) {
             className="object-contain"
           />
         </div>
-        {rightSideContent && (
-          <div className="ml-auto">{rightSideContent}</div>
+        {showAddPlaceLink && (
+          <div className="ml-auto">
+            <Button
+              type="text"
+              shape="circle"
+              size="large"
+              className="flex justify-center items-center"
+              icon={
+                <MdOutlineAddLocationAlt className="w-6 h-6" color="white" />
+              }
+              onClick={handleAddPlaceClick}
+            />
+          </div>
         )}
       </div>
     </header>

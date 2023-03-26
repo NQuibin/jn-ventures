@@ -30,7 +30,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
   return (
     <div className="flex justify-between p-3 h-full bg-white rounded border-2 border-neutral-200">
       <div
-        className={classNames('pr-2', {
+        className={classNames('pr-4', {
           'w-full': !hasImage,
           'w-3/5': hasImage,
         })}
@@ -39,7 +39,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
           <Tag color={typeTagColor} className="text-[10px]">
             {spot.type.toUpperCase()}
           </Tag>
-          <div>
+          <div className="flex items-center">
             {spot.favourite && (
               <HeartTwoTone twoToneColor="#eb2f96" className="mr-1" />
             )}
@@ -75,7 +75,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
         </div>
       </div>
       {hasImage && (
-        <div className="relative shrink-0 w-24 h-24">
+        <div className="relative shrink-0 w-2/5 h-full">
           <Image
             fill
             src={imageUrl}

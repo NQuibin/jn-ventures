@@ -1,7 +1,8 @@
 import type { GetServerSidePropsContext } from 'next';
 
 import { useEffect, useState } from 'react';
-import { Button, Icon, Spinner, Alert, AlertIcon } from '@chakra-ui/react';
+import { LoadingOutlined, GoogleOutlined } from '@ant-design/icons';
+import { Spin, Button, Alert } from 'antd';
 import PageLayout from '../features/common/components/PageLayout';
 import PageHeader from '../features/common/components/PageHeader';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
@@ -11,7 +12,6 @@ import {
 } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 import { FcGoogle } from 'react-icons/fc';
-import * as process from 'process';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const supabase = createServerSupabaseClient(ctx);
@@ -83,28 +83,31 @@ export default function Login() {
       <PageHeader />
       <div className="flex flex-wrap justify-center max-w-xl w-full mx-auto p-8">
         {isLoading || isValidatingUser ? (
-          <Spinner size="xl" />
+          <Spin
+            indicator={
+              <LoadingOutlined spin style={{ fontSize: 60, color: 'black' }} />
+            }
+          />
         ) : (
           <>
             {isInvalidUser && (
-              <Alert status="error" className="rounded-md mb-6">
-                <AlertIcon />
-                Sorry, you&apos;re not one of the lucky few to be a maintainer.
-              </Alert>
+              <Alert
+                showIcon
+                closable
+                type="error"
+                message="Sorry, you're not one of the lucky few to be a maintainer."
+                className="mb-6 w-full"
+              />
             )}
-            <div className="bg-white p-4 rounded shadow-md">
+            <div className="bg-white p-4 rounded border-2 border-neutral-200">
               <h2 className="text-lg font-bold mb-2">Login</h2>
               <p className="mb-6">
                 Only some people are allowed to maintain the site. Maybe
                 you&apos;re one of them!
               </p>
               <Button
-                colorScheme="blue"
-                leftIcon={
-                  <div className="bg-white rounded-full p-0.5">
-                    <Icon as={FcGoogle} w={5} h={5} />
-                  </div>
-                }
+                type="primary"
+                icon={<GoogleOutlined />}
                 onClick={signInWithGoogle}
               >
                 Login

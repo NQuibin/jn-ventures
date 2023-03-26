@@ -1,6 +1,4 @@
-import { AiTwotoneHeart } from 'react-icons/ai';
-import { BsCheck2Circle } from 'react-icons/bs';
-import { Icon } from '@chakra-ui/react';
+import { CheckCircleTwoTone, HeartTwoTone } from '@ant-design/icons';
 
 interface SpotLegendProps {
   className?: string;
@@ -8,13 +6,13 @@ interface SpotLegendProps {
 
 export default function SpotLegend({ className }: SpotLegendProps) {
   return (
-    <div className={`${className} flex`}>
-      <span className="inline-flex mr-4 items-center">
-        <Icon as={AiTwotoneHeart} color="#eb2f96" className="mr-1.5 mb-0.5" />
+    <div className={`${className} flex text-xs`}>
+      <span className="inline-flex mr-2 items-center">
+        <HeartTwoTone twoToneColor="#eb2f96" className="mr-1" />
         Favourite
       </span>
       <span className="inline-flex items-center">
-        <Icon as={BsCheck2Circle} color="green" className="mr-1.5 mb-0.5" />
+        <CheckCircleTwoTone twoToneColor="#52c41a" className="mr-1" />
         Visited
       </span>
     </div>
