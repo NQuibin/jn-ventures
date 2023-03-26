@@ -28,7 +28,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
   };
 
   return (
-    <div className="flex justify-between p-3 h-full bg-white rounded border-2 border-neutral-200">
+    <div className="flex justify-between p-3 h-full bg-white rounded border-2 border-solid border-neutral-200">
       <div
         className={classNames('pr-4', {
           'w-full': !hasImage,

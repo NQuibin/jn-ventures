@@ -11,6 +11,7 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
   const theme: ThemeConfig = {
     token: {
       fontFamily: "'Quattrocento Sans', sans-serif",
+      fontSize: 16
     },
   };
 
