@@ -1,6 +1,7 @@
 import type { NewSpot, Spot, SpotRow, SpotType } from './types';
 
 import { supabase } from '@/core/supabase';
+import _ from 'lodash';
 import {
   convertObjKeysToCamelCase,
   convertObjKeysToSnakeCase,
@@ -76,6 +77,7 @@ export class SpotService {
 
     const newSpotData = {
       ...data,
+      area: _.capitalize(data.area),
       visited: data.visited || false,
       favourite: data.favourite || false,
     } satisfies NewSpot;

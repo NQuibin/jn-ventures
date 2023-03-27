@@ -21,11 +21,11 @@ export default function PageHeader({ showAddPlaceLink }: PageHeaderProps) {
   };
 
   return (
-    <header className="bg-neutral-800 w-full h-20 flex shrink-0 justify-center items-center">
+    <header className="sticky z-50 bg-neutral-800 w-full h-16 flex shrink-0 justify-center items-center">
       <h1 className="hidden">JN Ventures</h1>
-      <div className="max-w-6xl p-4 w-full flex justify-center items-center">
+      <div className="max-w-6xl px-4 w-full flex justify-center items-center">
         <div
-          className={classNames('relative w-48 h-20 cursor-pointer', {
+          className={classNames('relative w-48 h-16 cursor-pointer', {
             'ml-auto': !!showAddPlaceLink,
           })}
           onClick={handleLogoClick}
