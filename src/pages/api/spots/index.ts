@@ -11,14 +11,22 @@ interface ListSpotsQueryString {
   type?: string;
   visited?: string;
   favourite?: string;
+  area?: string;
 }
 
 const listSpotsHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const queryParams = req.query as ListSpotsQueryString;
   const filters = {
     type: queryParams.type as SpotType,
-    visited: queryParams.visited === 'true',
-    favourite: queryParams.favourite === 'true',
+    visited:
+      queryParams.visited === undefined
+        ? undefined
+        : queryParams.visited === 'true',
+    favourite:
+      queryParams.favourite === undefined
+        ? undefined
+        : queryParams.favourite === 'true',
+    area: queryParams.area as string,
   };
 
   const spot = await spotService.listSpots(filters);

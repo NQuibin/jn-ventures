@@ -17,15 +17,17 @@ const TABLE_COLUMNS = {
   visited: 'visited',
   favourite: 'favourite',
   googlePlaceId: 'google_place_id',
+  area: 'area',
 };
 
 // TODO add error validations
 // TODO check for unique google place id
 
 interface ListSpotsFilters {
-  type: SpotType;
-  visited: boolean;
-  favourite: boolean;
+  type?: SpotType;
+  visited?: boolean;
+  favourite?: boolean;
+  area?: string
 }
 
 export class SpotService {
@@ -92,5 +94,11 @@ export class SpotService {
     const newSpotRow = result.data as SpotRow[];
 
     return convertObjKeysToCamelCase(newSpotRow) as Spot;
+  }
+
+  async listSpotAreas(): Promise<string[]> {
+    const result = await supabase.rpc('spot_areas');
+    const data = result.data as Array<{ area: string }>;
+    return data.map(d => d.area);
   }
 }
