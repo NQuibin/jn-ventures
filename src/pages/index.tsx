@@ -9,7 +9,7 @@ import SpotCard from '../features/spot/components/SpotCard';
 import PageFooter from '../features/common/components/PageFooter';
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Divider, Spin } from 'antd';
+import { Divider, Select, Spin, FloatButton } from 'antd';
 import SpotFilters from '../features/spot/components/SpotFilters';
 import { LoadingOutlined } from '@ant-design/icons';
 
@@ -110,30 +110,20 @@ export default function Home({
   }
 
   function buildAlphabetizedNavigation(): ReactNode {
-    const navItems = Object.keys(alphabetizedSpots)
+    const navOptions = Object.keys(alphabetizedSpots)
       .sort()
-      .map(key => (
-        <span
-          key={key}
-          className="
-            cursor-pointer
-            font-bold
-            inline-block
-            text-center
-            mr-4
-            mb-4
-            pb-1
-            border-solid
-            border-0
-            border-b-[1px]
-          "
-          onClick={() => scrollToSection(key)}
-        >
-          {key}
-        </span>
-      ));
+      .map(key => ({ label: key, value: key }));
 
-    return <div className="flex flex-wrap justify-center pt-6 pb-2">{navItems}</div>;
+    return (
+      <div className="text-right">
+        <label>Scroll To:</label>
+        <Select
+          bordered={false}
+          options={navOptions}
+          onSelect={(key: string) => scrollToSection(key)}
+        />
+      </div>
+    );
   }
 
   async function handleFilter(
@@ -167,6 +157,7 @@ export default function Home({
           {buildAlphabetizedNavigation()}
           {buildSections()}
         </div>
+        <FloatButton.BackTop />
       </Spin>
       <PageFooter />
     </PageLayout>

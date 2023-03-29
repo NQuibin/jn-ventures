@@ -86,10 +86,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@fontsource/quattrocento-sans@^4.5.10":
+"@fontsource/mukta@^4.5.10":
   version "4.5.10"
-  resolved "https://registry.yarnpkg.com/@fontsource/quattrocento-sans/-/quattrocento-sans-4.5.10.tgz#09c04f89cddf3082f5d95b99de4e8a0962885b48"
-  integrity sha512-r2aG37kqcsM4YZCmE6WyPHmMmYShvsc4LhRP5mx/k9BvCPmDaeIkQQ80ph6Bc3Kslc7TgJy8/LWI5snfyH4+Sw==
+  resolved "https://registry.yarnpkg.com/@fontsource/mukta/-/mukta-4.5.10.tgz#c4756773aa03731c3dba6bee65fcaa55ad1f15b2"
+  integrity sha512-tmGW61Bq66WQHuRHTWSsWFYHNyiHo3nkA68Fvo2gB9InrVy7/i6sVPIhnurI0KtCOPpSj21kycU+CyxjlQMEQg==
 
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
@@ -109,6 +109,11 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
+
+"@n8tb1t/use-scroll-position@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@n8tb1t/use-scroll-position/-/use-scroll-position-2.0.3.tgz#207c54d584285cac0954d556964f83cf5774940b"
+  integrity sha512-6GO4FHVJTMI4jbRHborzemuL6B319qh2cVLOLj8DApJhjyT71eLgANbQ4bNKSZ51zBm3uJ3WmqnyNF17eSsDyw==
 
 "@next/env@13.2.1":
   version "13.2.1"

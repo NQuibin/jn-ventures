@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
-    "@fontsource/quattrocento-sans": "^4.5.10",
+    "@fontsource/mukta": "^4.5.10",
+    "@n8tb1t/use-scroll-position": "^2.0.3",
     "@supabase/auth-helpers-nextjs": "^0.5.6",
     "@supabase/auth-helpers-react": "^0.3.1",
     "@supabase/supabase-js": "^2.8.0",
