@@ -7,8 +7,7 @@ import PageLayout from '../features/common/components/PageLayout';
 import PageHeader from '../features/common/components/PageHeader';
 import SpotCard from '../features/spot/components/SpotCard';
 import PageFooter from '../features/common/components/PageFooter';
-import SpotLegend from '../features/spot/components/SpotLegend';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Divider, Spin } from 'antd';
 import SpotFilters from '../features/spot/components/SpotFilters';
@@ -48,6 +47,7 @@ export default function Home({
     [key: string]: Spot[];
   }>({});
   const [isLoading, setIsLoading] = useState(false);
+  const sectionsRef = useRef<{ [key: string]: HTMLElement | null }>({});
 
   useEffect(() => {
     buildAlphabetizedSpots(initialSpots);
@@ -82,16 +82,58 @@ export default function Home({
 
     keys.forEach(key => {
       sections.push(
-        <div key={key} className="flex flex-wrap">
+        <section
+          key={key}
+          ref={el => (sectionsRef.current[key] = el)}
+          className="flex flex-wrap"
+        >
           <Divider orientation="left">
-            <h2 className="mb-0 text-3xl font-bold">{key}</h2>
+            <h2 id={key} className="mb-0 text-3xl font-bold">
+              {key}
+            </h2>
           </Divider>
           {buildSpotCards(alphabetizedSpots[key])}
-        </div>
+        </section>
       );
     });
 
     return sections;
+  }
+
+  function scrollToSection(sectionKey: string) {
+    const el = sectionsRef.current[sectionKey];
+    const dimensions = el?.getBoundingClientRect();
+
+    if (dimensions) {
+      window.scrollTo(window.scrollX, dimensions.top - 100);
+    }
+  }
+
+  function buildAlphabetizedNavigation(): ReactNode {
+    const navItems = Object.keys(alphabetizedSpots)
+      .sort()
+      .map(key => (
+        <span
+          key={key}
+          className="
+            cursor-pointer
+            font-bold
+            inline-block
+            text-center
+            mr-4
+            mb-4
+            pb-1
+            border-solid
+            border-0
+            border-b-[1px]
+          "
+          onClick={() => scrollToSection(key)}
+        >
+          {key}
+        </span>
+      ));
+
+    return <div className="flex flex-wrap justify-center pt-6 pb-2">{navItems}</div>;
   }
 
   async function handleFilter(
@@ -120,9 +162,9 @@ export default function Home({
           <LoadingOutlined spin style={{ fontSize: 60, color: 'black' }} />
         }
       >
-        <div className="max-w-5xl w-full mx-auto p-4">
+        <div className="max-w-4xl w-full mx-auto p-4">
           <SpotFilters areas={areas} onHandleFilter={handleFilter} />
-          <SpotLegend className="justify-end" />
+          {buildAlphabetizedNavigation()}
           {buildSections()}
         </div>
       </Spin>
