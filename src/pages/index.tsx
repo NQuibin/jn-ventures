@@ -10,8 +10,9 @@ import PageFooter from '../features/common/components/PageFooter';
 import SpotLegend from '../features/spot/components/SpotLegend';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Divider } from 'antd';
+import { Divider, Spin } from 'antd';
 import SpotFilters from '../features/spot/components/SpotFilters';
+import { LoadingOutlined } from '@ant-design/icons';
 
 interface HomeProps {
   initialSpots: Spot[];
@@ -46,6 +47,7 @@ export default function Home({
   const [alphabetizedSpots, setAlphabetizedSpots] = useState<{
     [key: string]: Spot[];
   }>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     buildAlphabetizedSpots(initialSpots);
@@ -95,20 +97,35 @@ export default function Home({
   async function handleFilter(
     filters: Partial<{ [key: string]: string | boolean }>
   ) {
-    const res = await axios.get('/api/spots', {
-      params: filters,
-    });
-    buildAlphabetizedSpots(res.data);
+    setIsLoading(true);
+
+    try {
+      const res = await axios.get('/api/spots', {
+        params: filters,
+      });
+      buildAlphabetizedSpots(res.data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
     <PageLayout headTitle="Food spots">
       <PageHeader showAddPlaceLink />
-      <div className="max-w-5xl w-full mx-auto p-4">
-        <SpotFilters areas={areas} onHandleFilter={handleFilter} />
-        <SpotLegend className="justify-end" />
-        {buildSections()}
-      </div>
+      <Spin
+        spinning={isLoading}
+        indicator={
+          <LoadingOutlined spin style={{ fontSize: 60, color: 'black' }} />
+        }
+      >
+        <div className="max-w-5xl w-full mx-auto p-4">
+          <SpotFilters areas={areas} onHandleFilter={handleFilter} />
+          <SpotLegend className="justify-end" />
+          {buildSections()}
+        </div>
+      </Spin>
       <PageFooter />
     </PageLayout>
   );

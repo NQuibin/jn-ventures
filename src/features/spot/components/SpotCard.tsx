@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { Tag } from 'antd';
 import {
   CheckCircleTwoTone,
-  EnvironmentOutlined,
+  EnvironmentFilled,
   HeartTwoTone,
   LinkOutlined,
 } from '@ant-design/icons';
@@ -55,7 +55,10 @@ export default function SpotCard({ spot }: SpotCardProps) {
               target="_blank"
               className="inline-flex items-center mr-4"
             >
-              <EnvironmentOutlined className="mb-0.5 mr-1" />
+              <EnvironmentFilled
+                style={{ color: typeTagColor }}
+                className="mb-0.5 mr-1"
+              />
               <span className="text-sm text-black">
                 {_.capitalize(spot.area)}
               </span>
@@ -67,7 +70,10 @@ export default function SpotCard({ spot }: SpotCardProps) {
                 target="_blank"
                 className="inline-flex items-center truncate"
               >
-                <LinkOutlined className="mr-1" />
+                <LinkOutlined
+                  style={{ color: typeTagColor }}
+                  className="mr-1"
+                />
                 <span className="text-sm truncate text-black">
                   {extractUrlHost(spot.website)}
                 </span>

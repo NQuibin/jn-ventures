@@ -52,13 +52,14 @@ export default function SpotFilters({
         allowClear
         placeholder="Filter by type"
         options={buildTypeOptions()}
-        className="mr-4"
+        className="mr-4 w-full"
         onChange={value => handleFilterSelect('type', value)}
       />
       <Select
         allowClear
         placeholder="Filter by area"
         options={buildAreaOptions()}
+        className="w-full"
         onChange={value => handleFilterSelect('area', value)}
       />
     </div>
