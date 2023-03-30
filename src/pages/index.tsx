@@ -146,7 +146,7 @@ export default function Home({
 
   return (
     <PageLayout headTitle="Food spots">
-      <PageHeader showAddPlaceLink />
+      <PageHeader showMenu />
       <Spin
         spinning={isLoading}
         indicator={

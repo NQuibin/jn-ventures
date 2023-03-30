@@ -1,15 +1,16 @@
 import Image from 'next/image';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import { Button, Dropdown } from 'antd';
-import { MdOutlineAddLocationAlt } from 'react-icons/md';
+import { Dropdown } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
 import Logo from 'public/logo.png';
+import Link from 'next/link';
 
 interface PageHeaderProps {
-  showAddPlaceLink?: boolean;
+  showMenu?: boolean;
 }
 
-export default function PageHeader({ showAddPlaceLink }: PageHeaderProps) {
+export default function PageHeader({ showMenu }: PageHeaderProps) {
   const router = useRouter();
 
   const handleLogoClick = () => {
@@ -26,7 +27,7 @@ export default function PageHeader({ showAddPlaceLink }: PageHeaderProps) {
       <div className="max-w-6xl px-4 w-full flex justify-center items-center">
         <div
           className={classNames('relative w-48 h-14 cursor-pointer', {
-            'ml-auto': !!showAddPlaceLink,
+            'ml-auto': !!showMenu,
           })}
           onClick={handleLogoClick}
         >
@@ -37,14 +38,25 @@ export default function PageHeader({ showAddPlaceLink }: PageHeaderProps) {
             className="object-contain"
           />
         </div>
-        {showAddPlaceLink && (
+        {showMenu && (
           <div className="ml-auto">
             <Dropdown
-              menu={{ items: [{ label: 'Add Place', key: 'add-place' }] }}
+              menu={{
+                items: [
+                  {
+                    key: 'login',
+                    label: <Link href="/login">Login</Link>,
+                  },
+                  {
+                    key: 'add-place',
+                    label: <Link href="/add-place">Add place</Link>,
+                  },
+                ],
+              }}
               placement="bottomRight"
               trigger={['click']}
             >
-              <a href="#">Menu</a>
+              <MenuOutlined className="text-white" />
             </Dropdown>
           </div>
         )}
