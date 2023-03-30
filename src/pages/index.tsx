@@ -116,8 +116,9 @@ export default function Home({
 
     return (
       <div className="text-right">
-        <label>Scroll To:</label>
         <Select
+          placeholder="Scroll to"
+          className="w-28"
           bordered={false}
           options={navOptions}
           onSelect={(key: string) => scrollToSection(key)}
@@ -152,7 +153,7 @@ export default function Home({
           <LoadingOutlined spin style={{ fontSize: 60, color: 'black' }} />
         }
       >
-        <div className="max-w-4xl w-full mx-auto p-4">
+        <div className="max-w-4xl w-full mx-auto px-4 py-8">
           <SpotFilters areas={areas} onHandleFilter={handleFilter} />
           {buildAlphabetizedNavigation()}
           {buildSections()}

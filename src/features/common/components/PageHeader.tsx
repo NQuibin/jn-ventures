@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import { Button } from 'antd';
+import { Button, Dropdown } from 'antd';
 import { MdOutlineAddLocationAlt } from 'react-icons/md';
 import Logo from 'public/logo.png';
 
@@ -39,16 +39,13 @@ export default function PageHeader({ showAddPlaceLink }: PageHeaderProps) {
         </div>
         {showAddPlaceLink && (
           <div className="ml-auto">
-            <Button
-              type="text"
-              shape="circle"
-              size="large"
-              className="flex justify-center items-center"
-              icon={
-                <MdOutlineAddLocationAlt className="w-6 h-6" color="white" />
-              }
-              onClick={handleAddPlaceClick}
-            />
+            <Dropdown
+              menu={{ items: [{ label: 'Add Place', key: 'add-place' }] }}
+              placement="bottomRight"
+              trigger={['click']}
+            >
+              <a href="#">Menu</a>
+            </Dropdown>
           </div>
         )}
       </div>
