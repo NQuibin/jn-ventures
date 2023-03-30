@@ -148,9 +148,10 @@ export default function Home({
     <PageLayout headTitle="Food spots">
       <PageHeader showMenu />
       <Spin
+        size="large"
         spinning={isLoading}
         indicator={
-          <LoadingOutlined spin style={{ fontSize: 60, color: 'black' }} />
+          <LoadingOutlined style={{ color: 'black' }} />
         }
       >
         <div className="max-w-4xl w-full mx-auto px-4 py-8">

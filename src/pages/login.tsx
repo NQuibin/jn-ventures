@@ -84,9 +84,8 @@ export default function Login() {
       <div className="flex flex-wrap justify-center max-w-xl w-full mx-auto p-8">
         {isLoading || isValidatingUser ? (
           <Spin
-            indicator={
-              <LoadingOutlined spin style={{ fontSize: 60, color: 'black' }} />
-            }
+            size="large"
+            indicator={<LoadingOutlined style={{ color: 'black' }} />}
           />
         ) : (
           <>
