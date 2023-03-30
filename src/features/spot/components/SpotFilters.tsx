@@ -1,7 +1,8 @@
 import { SpotType } from '@/services/spot/types';
 
 import { useState } from 'react';
-import { Select } from 'antd';
+import { Select, Button } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 import { TYPES } from '@/services/spot/constants';
 
@@ -43,25 +44,35 @@ export default function SpotFilters({
   function handleFilterSelect(filterKey: string, filterValue: string) {
     const updatedFilters = { ...filters, [filterKey]: filterValue };
     setFilters(updatedFilters);
-    onHandleFilter(updatedFilters);
+  }
+
+  function handleSearch() {
+    onHandleFilter(filters);
   }
 
   return (
-    <div className="flex mb-4">
-      <Select
-        allowClear
-        placeholder="Filter by type"
-        options={buildTypeOptions()}
-        className="mr-4 w-full"
-        onChange={value => handleFilterSelect('type', value)}
-      />
-      <Select
-        allowClear
-        placeholder="Filter by area"
-        options={buildAreaOptions()}
-        className="w-full"
-        onChange={value => handleFilterSelect('area', value)}
-      />
+    <div className="bg-neutral-200 p-4 mb-4 rounded">
+      <div className="flex mb-2">
+        <Select
+          allowClear
+          placeholder="Filter by type"
+          options={buildTypeOptions()}
+          className="mr-4 w-full"
+          onChange={value => handleFilterSelect('type', value)}
+        />
+        <Select
+          allowClear
+          placeholder="Filter by area"
+          options={buildAreaOptions()}
+          className="w-full"
+          onChange={value => handleFilterSelect('area', value)}
+        />
+      </div>
+      <div className="w-full text-right">
+        <Button icon={<SearchOutlined />} onClick={handleSearch}>
+          Search
+        </Button>
+      </div>
     </div>
   );
 }
