@@ -4,7 +4,6 @@ import Image from 'next/image';
 import _ from 'lodash';
 import { Tag } from 'antd';
 import {
-  CheckCircleTwoTone,
   EnvironmentFilled,
   HeartTwoTone,
   LinkOutlined,
@@ -44,20 +43,23 @@ export default function SpotCard({ spot }: SpotCardProps) {
   return (
     <div className="flex justify-between p-3 h-full bg-white rounded border-2 border-solid border-neutral-200">
       <div
-        className={classNames('pr-4', {
+        className={classNames({
           'w-full': !hasImage,
-          'w-2/3': hasImage,
+          'w-2/3 pr-4': hasImage,
         })}
       >
         <div className="flex items-center mb-4">
           <Tag color={typeTagColor} className="text-[10px]">
             {spot.type.toUpperCase()}
           </Tag>
-          <div className="flex items-center">
+          <div className="flex items-center w-full">
             <ShareAltOutlined
               className="mr-1 cursor-pointer"
               onClick={handleShare}
             />
+            {!hasImage && spot.favourite && (
+              <HeartTwoTone twoToneColor="#eb2f96" className="ml-auto" />
+            )}
           </div>
         </div>
         <div>
@@ -98,6 +100,12 @@ export default function SpotCard({ spot }: SpotCardProps) {
       </div>
       {hasImage && (
         <div className="relative shrink-0 w-1/3 h-full">
+          {spot.favourite && (
+            <HeartTwoTone
+              twoToneColor="#eb2f96"
+              className="absolute z-10 top-1 right-1"
+            />
+          )}
           <Image
             fill
             src={imageUrl}
