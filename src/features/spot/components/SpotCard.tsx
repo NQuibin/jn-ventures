@@ -8,6 +8,7 @@ import {
   EnvironmentFilled,
   HeartTwoTone,
   LinkOutlined,
+  ShareAltOutlined,
 } from '@ant-design/icons';
 import { buildImageUrl } from '@/utils/buildImageUrl';
 import { BUCKET_SPOTS } from '@/core/supabase/constants';
@@ -23,9 +24,22 @@ export default function SpotCard({ spot }: SpotCardProps) {
   const hasImage = !!spot.image;
   const imageUrl = !!spot.image ? buildImageUrl(spot.image, BUCKET_SPOTS) : '';
 
-  const extractUrlHost = (url: string): string => {
+  function extractUrlHost(url: string): string {
     return new URL(url).host;
-  };
+  }
+
+  async function handleShare(): Promise<void> {
+    const shareData = {
+      title: spot.name,
+      url: spot.googleMapsLink,
+    };
+
+    try {
+      await navigator.share(shareData);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <div className="flex justify-between p-3 h-full bg-white rounded border-2 border-solid border-neutral-200">
@@ -40,10 +54,10 @@ export default function SpotCard({ spot }: SpotCardProps) {
             {spot.type.toUpperCase()}
           </Tag>
           <div className="flex items-center">
-            {spot.favourite && (
-              <HeartTwoTone twoToneColor="#eb2f96" className="mr-1" />
-            )}
-            {spot.visited && <CheckCircleTwoTone twoToneColor="#52c41a" />}
+            <ShareAltOutlined
+              className="mr-1 cursor-pointer"
+              onClick={handleShare}
+            />
           </div>
         </div>
         <div>
@@ -88,7 +102,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
             fill
             src={imageUrl}
             alt={`${spot.name} card image`}
-            className="object-cover rounded shadow shadow-neutral-400"
+            className="object-cover rounded"
           />
         </div>
       )}

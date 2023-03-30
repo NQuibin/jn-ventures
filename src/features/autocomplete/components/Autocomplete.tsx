@@ -21,6 +21,7 @@ export default function Autocomplete({ onPlaceSelect }: AutocompleteProps) {
       'url',
       'address_components',
       'adr_address',
+      'opening_hours'
     ],
     types: ['establishment'],
   };
